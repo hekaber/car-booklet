@@ -1,0 +1,53 @@
+.main-container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 110px 20px 20px 20px;
+}
+
+.title {
+  font-size: 2.25em;
+  margin-bottom: 20px;
+}
+
+.subtitle {
+  font-size: 1.5em;
+  margin-bottom: 20px;
+}
+
+form {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  margin-top: 20px;
+}
+
+input[type="text"] {
+  font-size: 1.125em;
+  padding: 10px;
+  margin-bottom: 20px;
+  width: 600px;
+}
+
+input[type="submit"], .app-btn {
+  font-size: 1.125em;  
+  padding: 10px 20px;
+  background-color: blue;
+  color: white;
+  border: none;
+  border-radius: 10px;
+  cursor: pointer;
+}
+
+.accordion {
+  width: 100%;
+  text-align: left;
+  border-color: black white black white;
+  border-style: solid;
+  border-width: 0px 0px 1px 0px;
+}
+
+.accordion > div {
+  line-height: 3em;
+  padding-left: 1em;
+}

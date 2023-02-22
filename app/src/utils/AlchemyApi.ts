@@ -1,0 +1,21 @@
+import { Alchemy, Network } from 'alchemy-sdk';
+
+class AlchemyApi {
+
+    private static alchemyInstance: Alchemy;
+    private static readonly settings = {
+        apiKey: import.meta.env.VITE_APP_ALCHEMY_API_KEY,
+        network: Network.ETH_MAINNET,
+    };
+
+    private constructor() { }
+
+    static getAlchemyInstance(): Alchemy {
+        if (!AlchemyApi.alchemyInstance) {
+            AlchemyApi.alchemyInstance = new Alchemy(AlchemyApi.settings)
+        }
+        return AlchemyApi.alchemyInstance;
+    }
+}
+
+export default AlchemyApi;
