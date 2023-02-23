@@ -1,7 +1,5 @@
-import * as React from 'react';
 import AppBar from '@mui/material/AppBar';
 import Avatar from '@mui/material/Avatar';
-import Button from '@mui/material/Button';
 import Grid from '@mui/material/Grid';
 import HelpIcon from '@mui/icons-material/Help';
 import IconButton from '@mui/material/IconButton';
@@ -13,11 +11,13 @@ import Tabs from '@mui/material/Tabs';
 import Toolbar from '@mui/material/Toolbar';
 import Tooltip from '@mui/material/Tooltip';
 import Typography from '@mui/material/Typography';
+import ConnectWalletButton from '../ConnectWalletButton/ConnectWalletButton';
 
 const lightColor = 'rgba(255, 255, 255, 0.7)';
 
 interface HeaderProps {
     onDrawerToggle: () => void;
+    routeName: string;
 }
 
 export default function Header(props: HeaderProps) {
@@ -82,18 +82,11 @@ export default function Header(props: HeaderProps) {
                     <Grid container alignItems="center" spacing={1}>
                         <Grid item xs>
                             <Typography color="inherit" variant="h5" component="h1">
-                                Authentication
+                                {props.routeName}
                             </Typography>
                         </Grid>
                         <Grid item>
-                            <Button
-                                sx={{ borderColor: lightColor }}
-                                variant="outlined"
-                                color="inherit"
-                                size="small"
-                            >
-                                Web setup
-                            </Button>
+                            <ConnectWalletButton/>
                         </Grid>
                         <Grid item>
                             <Tooltip title="Help">

@@ -1,4 +1,4 @@
-import * as React from 'react';
+import React, { useState } from 'react';
 import { ThemeProvider } from '@mui/material/styles';
 import useMediaQuery from '@mui/material/useMediaQuery';
 import CssBaseline from '@mui/material/CssBaseline';
@@ -28,7 +28,9 @@ interface IProps {
 const drawerWidth = 256;
 
 export default function Paperbase(props: IProps) {
-    const [mobileOpen, setMobileOpen] = React.useState(false);
+    const [mobileOpen, setMobileOpen] = useState(false);
+    const [routeName, setRouteName] = useState("/");
+
     const isSmUp = useMediaQuery(theme.breakpoints.up('sm'));
 
     const handleDrawerToggle = () => {
@@ -36,7 +38,7 @@ export default function Paperbase(props: IProps) {
     };
 
     const handleNavigatorClick = (routeName?: string) => {
-        console.error("MY ROUTE", routeName)
+        setRouteName(routeName ?? "/");
     }
 
     return (
@@ -63,7 +65,10 @@ export default function Paperbase(props: IProps) {
                     />
                 </Box>
                 <Box sx={{ flex: 1, display: 'flex', flexDirection: 'column' }}>
-                    <Header onDrawerToggle={handleDrawerToggle} />
+                    <Header
+                        onDrawerToggle={handleDrawerToggle}
+                        routeName={routeName}
+                    />
                     <Box component="main" sx={{ flex: 1, py: 6, px: 4, bgcolor: '#eaeff1' }}>
                         {props.children}
                     </Box>
