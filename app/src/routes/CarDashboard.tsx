@@ -1,12 +1,12 @@
 import React from "react";
 
-const About = () => {
+const CarDashboard = () => {
 
     return (
         <div className="about">
-            About stuff
+            Car dashboard
         </div>
     );
 };
 
-export default About;
+export default CarDashboard;

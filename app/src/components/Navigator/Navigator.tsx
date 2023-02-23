@@ -17,17 +17,19 @@ import SettingsInputComponentIcon from '@mui/icons-material/SettingsInputCompone
 import TimerIcon from '@mui/icons-material/Timer';
 import SettingsIcon from '@mui/icons-material/Settings';
 import PhonelinkSetupIcon from '@mui/icons-material/PhonelinkSetup';
+import { Link } from 'react-router-dom';
 
 const categories = [
     {
         id: 'Build',
         children: [
             {
-                id: 'Authentication',
+                id: 'Home',
                 icon: <PeopleIcon />,
                 active: true,
+                link: '/'
             },
-            { id: 'Database', icon: <DnsRoundedIcon /> },
+            { id: 'My Car', icon: <DnsRoundedIcon />, link: '/cardashboard' },
             { id: 'Storage', icon: <PermMediaOutlinedIcon /> },
             { id: 'Hosting', icon: <PublicIcon /> },
             { id: 'Functions', icon: <SettingsEthernetIcon /> },
@@ -62,14 +64,18 @@ const itemCategory = {
     px: 3,
 };
 
-export default function Navigator(props: DrawerProps) {
-    const { ...other } = props;
+interface NavigatorProps extends DrawerProps {
+    listItemClick: (routeName?: string) => void;
+}
+
+export default function Navigator(props: NavigatorProps) {
+    const { listItemClick, ...other } = props;
 
     return (
         <Drawer variant="permanent" {...other}>
             <List disablePadding>
                 <ListItem sx={{ ...item, ...itemCategory, fontSize: 22, color: '#fff' }}>
-                    Paperbase
+                    Car Booklet
                 </ListItem>
                 <ListItem sx={{ ...item, ...itemCategory }}>
                     <ListItemIcon>
@@ -82,11 +88,13 @@ export default function Navigator(props: DrawerProps) {
                         <ListItem sx={{ py: 2, px: 3 }}>
                             <ListItemText sx={{ color: '#fff' }}>{id}</ListItemText>
                         </ListItem>
-                        {children.map(({ id: childId, icon, active }) => (
+                        {children.map(({ id: childId, icon, active, link }) => (
                             <ListItem disablePadding key={childId}>
                                 <ListItemButton selected={active} sx={item}>
                                     <ListItemIcon>{icon}</ListItemIcon>
-                                    <ListItemText>{childId}</ListItemText>
+                                    <ListItemText>
+                                        <Link to={link ?? '#'} onClick={() => listItemClick(link)}>{childId}</Link>
+                                    </ListItemText>
                                 </ListItemButton>
                             </ListItem>
                         ))}

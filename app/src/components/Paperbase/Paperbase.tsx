@@ -6,7 +6,6 @@ import Box from '@mui/material/Box';
 import Typography from '@mui/material/Typography';
 import Link from '@mui/material/Link';
 import Navigator from '../Navigator/Navigator';
-import Content from '../Content/Content';
 import Header from '../Header/Header';
 import theme from './Theme';
 
@@ -14,8 +13,8 @@ function Copyright() {
     return (
         <Typography variant="body2" color="text.secondary" align="center">
             {'Copyright © '}
-            <Link color="inherit" href="https://mui.com/">
-                Your Website
+            <Link color="inherit" href="https://carbooklet.io/">
+                carbooklet.io
             </Link>{' '}
             {new Date().getFullYear()}.
         </Typography>
@@ -36,6 +35,10 @@ export default function Paperbase(props: IProps) {
         setMobileOpen(!mobileOpen);
     };
 
+    const handleNavigatorClick = (routeName?: string) => {
+        console.error("MY ROUTE", routeName)
+    }
+
     return (
         <ThemeProvider theme={theme}>
             <Box sx={{ display: 'flex', minHeight: '100vh' }}>
@@ -46,6 +49,7 @@ export default function Paperbase(props: IProps) {
                 >
                     {isSmUp ? null : (
                         <Navigator
+                            listItemClick={handleNavigatorClick}
                             PaperProps={{ style: { width: drawerWidth } }}
                             variant="temporary"
                             open={mobileOpen}
@@ -53,6 +57,7 @@ export default function Paperbase(props: IProps) {
                         />
                     )}
                     <Navigator
+                        listItemClick={handleNavigatorClick}
                         PaperProps={{ style: { width: drawerWidth } }}
                         sx={{ display: { sm: 'block', xs: 'none' } }}
                     />
