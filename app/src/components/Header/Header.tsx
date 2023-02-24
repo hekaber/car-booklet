@@ -12,6 +12,8 @@ import Toolbar from '@mui/material/Toolbar';
 import Tooltip from '@mui/material/Tooltip';
 import Typography from '@mui/material/Typography';
 import ConnectWalletButton from '../ConnectWalletButton/ConnectWalletButton';
+import { useContext } from 'react';
+import { UserContext } from '../../App';
 
 const lightColor = 'rgba(255, 255, 255, 0.7)';
 
@@ -22,6 +24,7 @@ interface HeaderProps {
 
 export default function Header(props: HeaderProps) {
     const { onDrawerToggle } = props;
+    const userContext = useContext(UserContext);
 
     return (
         <>
@@ -39,22 +42,10 @@ export default function Header(props: HeaderProps) {
                             </IconButton>
                         </Grid>
                         <Grid item xs />
-                        <Grid item>
-                            <Link
-                                href="/"
-                                variant="body2"
-                                sx={{
-                                    textDecoration: 'none',
-                                    color: lightColor,
-                                    '&:hover': {
-                                        color: 'common.white',
-                                    },
-                                }}
-                                rel="noopener noreferrer"
-                                target="_blank"
-                            >
-                                Go to docs
-                            </Link>
+                        <Grid
+                            item
+                        >
+                            {userContext.account ?? ""}
                         </Grid>
                         <Grid item>
                             <Tooltip title="Alerts • No alerts">

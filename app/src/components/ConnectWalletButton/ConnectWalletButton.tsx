@@ -5,8 +5,11 @@ import Web3 from 'web3';
 import { UserContext } from '../../App';
 
 // TODO pass this as a prop
-const lightColor = 'rgba(255, 255, 255, 0.7)';
-const { ethereum } = window;
+const lightColor: string = 'rgba(255, 255, 255, 0.7)';
+let alertMessage: string = "";
+
+// declare window as any otherwise linter complains
+const { ethereum } = (window as any);
 
 const ConnectWalletButton = () => {
 
@@ -15,21 +18,27 @@ const ConnectWalletButton = () => {
 
     const handleWalletConnection = async () => {
         if (!ethereum) {
+            alertMessage = "Metamask is not installed.";
             setAlert(true);
         }
-        try {
-            await ethereum.request({ method: 'eth_requestAccounts' });
-            const web3Instance = new Web3(ethereum);
-            userContext.setWeb3(web3Instance);
-            if (web3Instance) {
-                const accounts = await web3Instance.eth.getAccounts();
-                console.log("ACCOUNT", accounts[0])
-                userContext.setAccount(accounts[0]);
+        if (userContext.account === undefined) {
+            try {
+                await ethereum.request({ method: 'eth_requestAccounts' });
+                const web3Instance = new Web3(ethereum);
+                userContext.setWeb3(web3Instance);
+                if (web3Instance) {
+                    const accounts = await web3Instance.eth.getAccounts();
+                    userContext.setAccount(accounts[0]);
+                }
+            } catch (error: any) {
+                alertMessage = error.message;
+                setAlert(true);
             }
-        } catch (error) {
-            console.error(error);
         }
-        console.error("User context", userContext);
+        else {
+            userContext.setWeb3(undefined);
+            userContext.setAccount(undefined);
+        }
     }
 
     return (
@@ -41,9 +50,16 @@ const ConnectWalletButton = () => {
                 size="small"
                 onClick={handleWalletConnection}
             >
-                Connect wallet
+                {userContext.account === undefined ? "Connect wallet" : "Disconnect wallet"}
             </Button>
-            {alert ? <Alert severity='error'>Metamask is not installed!</Alert> : <></> }
+            {alert ?
+                <Alert
+                    sx={{ cursor: 'pointer' }}
+                    severity='error'
+                    onClick={() => setAlert(false)}>
+                    {alertMessage}
+                </Alert>
+                : <></>}
         </>
     );
 };
