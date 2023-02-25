@@ -7,7 +7,7 @@ import {Authorize} from './utils/Authorize.sol';
 // import "hardhat/console.sol";
 
 contract CarBooklet is Authorize {
-    
+
     struct MaintenanceRecord {
         uint256 mileage;
         string description;
@@ -18,8 +18,8 @@ contract CarBooklet is Authorize {
     MaintenanceRecord public previousRecord;
     event RecordCreated(address);
 
-    constructor() {
-        owner = msg.sender;
+    constructor(address _owner) {
+        owner = _owner;
     }
 
     function addMaintenanceRecord(uint256 mileage, string memory description)
