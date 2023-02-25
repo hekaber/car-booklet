@@ -1,4 +1,6 @@
-import * as React from 'react';
+import { Link } from 'react-router-dom';
+import { useState } from 'react';
+
 import Divider from '@mui/material/Divider';
 import Drawer, { DrawerProps } from '@mui/material/Drawer';
 import List from '@mui/material/List';
@@ -17,7 +19,6 @@ import SettingsInputComponentIcon from '@mui/icons-material/SettingsInputCompone
 import TimerIcon from '@mui/icons-material/Timer';
 import SettingsIcon from '@mui/icons-material/Settings';
 import PhonelinkSetupIcon from '@mui/icons-material/PhonelinkSetup';
-import { Link } from 'react-router-dom';
 
 const categories = [
     {
@@ -26,7 +27,6 @@ const categories = [
             {
                 id: 'Home',
                 icon: <PeopleIcon />,
-                active: true,
                 link: '/'
             },
             { id: 'My Car', icon: <DnsRoundedIcon />, link: '/cardashboard' },
@@ -70,6 +70,7 @@ interface NavigatorProps extends DrawerProps {
 
 export default function Navigator(props: NavigatorProps) {
     const { listItemClick, ...other } = props;
+    const [currItemId, setCurrItemId] = useState('Home');
 
     return (
         <Drawer variant="permanent" {...other}>
@@ -88,15 +89,17 @@ export default function Navigator(props: NavigatorProps) {
                         <ListItem sx={{ py: 2, px: 3 }}>
                             <ListItemText sx={{ color: '#fff' }}>{id}</ListItemText>
                         </ListItem>
-                        {children.map(({ id: childId, icon, active, link }) => (
-                            <ListItem disablePadding key={childId}>
-                                <ListItemButton selected={active} sx={item}>
-                                    <ListItemIcon>{icon}</ListItemIcon>
-                                    <ListItemText>
-                                        <Link to={link ?? '#'} onClick={() => listItemClick(link)}>{childId}</Link>
-                                    </ListItemText>
-                                </ListItemButton>
-                            </ListItem>
+                        {children.map(({ id: childId, icon, link }) => (
+                            <Link key={childId} to={link ?? '#'} onClick={() => { listItemClick(link); setCurrItemId(childId); }}>
+                                <ListItem disablePadding>
+                                    <ListItemButton selected={childId === currItemId} sx={item}>
+                                        <ListItemIcon>{icon}</ListItemIcon>
+                                        <ListItemText>
+                                            {childId}
+                                        </ListItemText>
+                                    </ListItemButton>
+                                </ListItem>
+                            </Link>
                         ))}
                         <Divider sx={{ mt: 2 }} />
                     </Box>
