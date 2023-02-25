@@ -30,10 +30,17 @@ describe("CarBooklet", function () {
 
     describe("Authorization", function () {
 
-      it("Should add an aothorized address and check is the address is authorized", async function () {
+      it("Should add an authorized address and check is the address is authorized", async function () {
         const { carBooklet, owner, otherAccount } = await loadFixture(deployCarBookletFixture);
         await carBooklet.allowAuthorization(otherAccount.address);
         expect(await carBooklet.hasAuthorizedCredential(otherAccount.address)).to.equal(true);
+      });
+
+      it("Should revoke an authorized address", async function () {
+        const { carBooklet, owner, otherAccount } = await loadFixture(deployCarBookletFixture);
+        await carBooklet.allowAuthorization(otherAccount.address);
+        await carBooklet.revokeAuthorization(otherAccount.address);
+        expect(await carBooklet.hasAuthorizedCredential(otherAccount.address)).to.equal(false);
       });
     });
 
@@ -50,6 +57,38 @@ describe("CarBooklet", function () {
         const currRecord = carBooklet.record();
         expect((await currRecord).mileage.toNumber()).to.equal(mileage);
         expect((await currRecord).description).to.equal(description);
+      });
+
+      it("Should store a previous maintenance record", async function () {
+        const { carBooklet, owner, otherAccount } = await loadFixture(deployCarBookletFixture);
+        await carBooklet.allowAuthorization(otherAccount.address);
+
+        const firstDescription = "First maintenance";
+        const firstMileage = 3000;
+
+        const secondDescription = "Second maintenance";
+        const secondMileage = 6000;
+
+        await (carBooklet.connect(otherAccount).addMaintenanceRecord(firstMileage, firstDescription));
+        await (carBooklet.connect(otherAccount).addMaintenanceRecord(secondMileage, secondDescription));
+
+        const previousRecord = carBooklet.previousRecord();
+        expect((await previousRecord).mileage.toNumber()).to.equal(firstMileage);
+        expect((await previousRecord).description).to.equal(firstDescription);
+      });
+
+      it("Should avoid to store new records with lower mileage", async function () {
+        const { carBooklet, owner, otherAccount } = await loadFixture(deployCarBookletFixture);
+        await carBooklet.allowAuthorization(otherAccount.address);
+
+        const firstDescription = "First maintenance";
+        const firstMileage = 3000;
+
+        const secondDescription = "Second maintenance";
+        const secondMileage = 2000;
+
+        await (carBooklet.connect(otherAccount).addMaintenanceRecord(firstMileage, firstDescription));
+        await (expect(carBooklet.connect(otherAccount).addMaintenanceRecord(secondMileage, secondDescription))).to.be.revertedWith('Mileage is incorrect.');
       });
     });
 
