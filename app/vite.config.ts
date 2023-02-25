@@ -5,7 +5,7 @@ import react from '@vitejs/plugin-react';
 export default (({ mode }) => {
 
   //https://vitejs.dev/guide/api-javascript.html#loadenv
-  process.env = { ...process.env, ...loadEnv(mode, './env', '') };
+  process.env = { ...process.env, ...loadEnv(mode, '../env', '') };
 
   return defineConfig({
     plugins: [react()],
