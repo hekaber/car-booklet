@@ -1,18 +1,18 @@
 // SPDX-License-Identifier: UNLICENSED
 pragma solidity ^0.8.19;
 
+import {Authorize} from './utils/Authorize.sol';
+
 // Uncomment this line to use console.log
 // import "hardhat/console.sol";
 
-contract CarBooklet {
+contract CarBooklet is Authorize {
+    
     struct MaintenanceRecord {
         uint256 mileage;
         string description;
         uint256 timestamp;
     }
-
-    address public owner;
-    mapping(address => bool) authorized;
 
     MaintenanceRecord public record = MaintenanceRecord(0, "", 0);
     MaintenanceRecord public previousRecord;
@@ -42,18 +42,5 @@ contract CarBooklet {
 
     function revokeAuthorization(address addr) external isOwner {
         authorized[addr] = false;
-    }
-
-    modifier isOwner() {
-        require(owner == msg.sender, "Only owner is allowed.");
-        _;
-    }
-
-    modifier isAuthorized() {
-        require(
-            authorized[msg.sender],
-            "Only authorized addresses are allowed."
-        );
-        _;
     }
 }
