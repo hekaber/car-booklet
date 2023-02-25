@@ -6,12 +6,12 @@ pragma solidity ^0.8.19;
 
 contract CarBooklet {
     struct MaintenanceRecord {
-        uint mileage;
+        uint256 mileage;
         string description;
-        uint timestamp;
+        uint256 timestamp;
     }
 
-    address owner;
+    address public owner;
     mapping(address => bool) authorized;
 
     MaintenanceRecord public record = MaintenanceRecord(0, "", 0);
@@ -22,8 +22,10 @@ contract CarBooklet {
         owner = msg.sender;
     }
 
-    function addMaintenanceRecord(uint mileage, string memory description) external isAuthorized {
-
+    function addMaintenanceRecord(uint256 mileage, string memory description)
+        external
+        isAuthorized
+    {
         require(mileage > record.mileage, "Mileage is incorrect.");
         previousRecord = record;
         record = MaintenanceRecord(mileage, description, block.timestamp);
@@ -34,17 +36,24 @@ contract CarBooklet {
         authorized[addr] = true;
     }
 
+    function hasAuthorizedCredential(address addr) external view isOwner returns(bool) {
+        return authorized[addr];
+    }
+
     function revokeAuthorization(address addr) external isOwner {
         authorized[addr] = false;
     }
 
-    modifier isOwner {
+    modifier isOwner() {
         require(owner == msg.sender, "Only owner is allowed.");
         _;
     }
 
-    modifier isAuthorized {
-        require(authorized[msg.sender], "Only authorized addresses are allowed.");
+    modifier isAuthorized() {
+        require(
+            authorized[msg.sender],
+            "Only authorized addresses are allowed."
+        );
         _;
     }
 }
