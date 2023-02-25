@@ -53,7 +53,7 @@ describe("CarBooklet", function () {
         const description = "First maintenance";
         const mileage = 3000;
 
-        await (carBooklet.connect(otherAccount).addMaintenanceRecord(mileage, description));
+        await carBooklet.connect(otherAccount).addMaintenanceRecord(mileage, description);
         const currRecord = carBooklet.record();
         expect((await currRecord).mileage.toNumber()).to.equal(mileage);
         expect((await currRecord).description).to.equal(description);
@@ -69,8 +69,8 @@ describe("CarBooklet", function () {
         const secondDescription = "Second maintenance";
         const secondMileage = 6000;
 
-        await (carBooklet.connect(otherAccount).addMaintenanceRecord(firstMileage, firstDescription));
-        await (carBooklet.connect(otherAccount).addMaintenanceRecord(secondMileage, secondDescription));
+        await carBooklet.connect(otherAccount).addMaintenanceRecord(firstMileage, firstDescription);
+        await carBooklet.connect(otherAccount).addMaintenanceRecord(secondMileage, secondDescription);
 
         const previousRecord = carBooklet.previousRecord();
         expect((await previousRecord).mileage.toNumber()).to.equal(firstMileage);
@@ -87,8 +87,8 @@ describe("CarBooklet", function () {
         const secondDescription = "Second maintenance";
         const secondMileage = 2000;
 
-        await (carBooklet.connect(otherAccount).addMaintenanceRecord(firstMileage, firstDescription));
-        await (expect(carBooklet.connect(otherAccount).addMaintenanceRecord(secondMileage, secondDescription))).to.be.revertedWith('Mileage is incorrect.');
+        await carBooklet.connect(otherAccount).addMaintenanceRecord(firstMileage, firstDescription);
+        await expect(carBooklet.connect(otherAccount).addMaintenanceRecord(secondMileage, secondDescription)).to.be.revertedWith('Mileage is incorrect.');
       });
     });
 
