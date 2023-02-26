@@ -36,8 +36,8 @@ const ConnectWalletButton = () => {
             }
         }
         else {
-            userContext.setWeb3(undefined);
-            userContext.setAccount(undefined);
+            userContext.setWeb3(null);
+            userContext.setAccount("");
         }
     }
 

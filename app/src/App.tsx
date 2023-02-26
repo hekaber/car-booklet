@@ -1,4 +1,4 @@
-import { useState, createContext } from "react";
+import { useState, createContext, useEffect } from "react";
 import { Route, Routes, Outlet } from "react-router-dom";
 import './App.css'
 import Home from './routes/Home';
@@ -18,22 +18,22 @@ function Layout() {
 }
 interface IUserContextProps {
   account: string | undefined;
-  setAccount: React.Dispatch<React.SetStateAction<string | undefined>>;
-  web3: Web3 | undefined;
-  setWeb3: React.Dispatch<React.SetStateAction<Web3 | undefined>>;
+  setAccount: React.Dispatch<React.SetStateAction<string>>;
+  web3: Web3 | null;
+  setWeb3: React.Dispatch<React.SetStateAction<Web3 | null>>;
 }
 
 export const UserContext = createContext<IUserContextProps>({
-  account: undefined,
+  account: "",
   setAccount: () => { },
-  web3: undefined,
+  web3: null,
   setWeb3: () => { },
 });
 
 function App() {
 
-  const [account, setAccount] = useState<string | undefined>(undefined);
-  const [web3, setWeb3] = useState<Web3 | undefined>(undefined);
+  const [account, setAccount] = useState<string>("");
+  const [web3, setWeb3] = useState<Web3 | null>(null);
 
   return (
     <UserContext.Provider value={{

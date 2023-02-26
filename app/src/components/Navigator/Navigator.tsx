@@ -1,5 +1,5 @@
 import { Link } from 'react-router-dom';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 
 import Divider from '@mui/material/Divider';
 import Drawer, { DrawerProps } from '@mui/material/Drawer';
@@ -69,8 +69,18 @@ interface NavigatorProps extends DrawerProps {
 }
 
 export default function Navigator(props: NavigatorProps) {
+    const storedItemId = localStorage.getItem('itemId');
     const { listItemClick, ...other } = props;
-    const [currItemId, setCurrItemId] = useState('Home');
+    const [currItemId, setCurrItemId] = useState(storedItemId ?? 'Home');
+
+    useEffect(() => {
+        localStorage.setItem('itemId', currItemId)
+    }, [currItemId]);
+
+    const handleListItemClick = (link: string | undefined, itemId: string) => {
+        listItemClick(link);
+        setCurrItemId(itemId);
+    }
 
     return (
         <Drawer variant="permanent" {...other}>
@@ -90,7 +100,7 @@ export default function Navigator(props: NavigatorProps) {
                             <ListItemText sx={{ color: '#fff' }}>{id}</ListItemText>
                         </ListItem>
                         {children.map(({ id: childId, icon, link }) => (
-                            <Link key={childId} to={link ?? '#'} onClick={() => { listItemClick(link); setCurrItemId(childId); }}>
+                            <Link key={childId} to={link ?? '#'} onClick={() => handleListItemClick(link, childId)}>
                                 <ListItem disablePadding>
                                     <ListItemButton selected={childId === currItemId} sx={item}>
                                         <ListItemIcon>{icon}</ListItemIcon>
