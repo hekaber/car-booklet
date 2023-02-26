@@ -2,12 +2,12 @@ import { ethers } from "hardhat";
 
 async function main() {
 
-  const CarBooklet = await ethers.getContractFactory("CarBooklet");
-  const carBooklet = await CarBooklet.deploy();
+  const CarBookletProvider = await ethers.getContractFactory("CarBookletProvider");
+  const carBookletProvider = await CarBookletProvider.deploy();
 
-  await carBooklet.deployed();
+  await carBookletProvider.deployed();
 
-  console.log(`CarBooklet deployed to ${carBooklet.address}`);
+  console.log(`CarBookletProvider deployed to ${carBookletProvider.address}`);
 }
 
 // We recommend this pattern to be able to use async/await everywhere
