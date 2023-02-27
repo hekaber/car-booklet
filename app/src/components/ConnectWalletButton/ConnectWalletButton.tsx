@@ -2,7 +2,7 @@ import Alert from '@mui/material/Alert';
 import Button from '@mui/material/Button';
 import { useContext, useState } from 'react';
 import { UserContext } from '../../App';
-import Web3Provider from '../../utils/Web3Provider';
+import Web3Provider from '../../classes/utils/Web3Provider';
 
 // TODO pass this as a prop
 const lightColor: string = 'rgba(255, 255, 255, 0.7)';
