@@ -1,8 +1,8 @@
 import Alert from '@mui/material/Alert';
 import Button from '@mui/material/Button';
 import { useContext, useState } from 'react';
-import Web3 from 'web3';
 import { UserContext } from '../../App';
+import Web3Provider from '../../classes/utils/Web3Provider';
 
 // TODO pass this as a prop
 const lightColor: string = 'rgba(255, 255, 255, 0.7)';
@@ -17,18 +17,15 @@ const ConnectWalletButton = () => {
     const userContext = useContext(UserContext);
 
     const handleWalletConnection = async () => {
-        if (!ethereum) {
-            alertMessage = "Metamask is not installed.";
-            setAlert(true);
-        }
-        if (userContext.account === undefined) {
+
+        if (!userContext.account) {
             try {
-                await ethereum.request({ method: 'eth_requestAccounts' });
-                const web3Instance = new Web3(ethereum);
-                userContext.setWeb3(web3Instance);
-                if (web3Instance) {
-                    const accounts = await web3Instance.eth.getAccounts();
+                const web3 = await Web3Provider.getWeb3Instance();
+                if (web3) {
+                    const accounts = await web3.eth.getAccounts();
+                    userContext.setWeb3(web3);
                     userContext.setAccount(accounts[0]);
+                    sessionStorage.setItem("account", accounts[0]);
                 }
             } catch (error: any) {
                 alertMessage = error.message;
@@ -36,8 +33,8 @@ const ConnectWalletButton = () => {
             }
         }
         else {
-            userContext.setWeb3(undefined);
-            userContext.setAccount(undefined);
+            userContext.setWeb3(null);
+            userContext.setAccount("");
         }
     }
 
@@ -50,7 +47,7 @@ const ConnectWalletButton = () => {
                 size="small"
                 onClick={handleWalletConnection}
             >
-                {userContext.account === undefined ? "Connect wallet" : "Disconnect wallet"}
+                {!userContext.account ? "Connect wallet" : "Disconnect wallet"}
             </Button>
             {alert ?
                 <Alert

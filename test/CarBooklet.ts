@@ -10,18 +10,18 @@ describe("CarBooklet", function () {
   async function deployCarBookletFixture() {
 
     // Contracts are deployed using the first signer/account by default
-    const [owner, otherAccount] = await ethers.getSigners();
+    const [deployer, otherAccount] = await ethers.getSigners();
 
     const CarBooklet = await ethers.getContractFactory("CarBooklet");
-    const carBooklet = await CarBooklet.deploy();
+    const carBooklet = await CarBooklet.deploy(otherAccount.address);
 
-    return { carBooklet, owner, otherAccount };
+    return { carBooklet, deployer, otherAccount };
   }
 
   describe("Deployment", function () {
     it("Should set the correct owner", async function () {
-      const { carBooklet, owner, otherAccount } = await loadFixture(deployCarBookletFixture);
-      expect(await carBooklet.owner()).to.equal(owner.address);
+      const { carBooklet, deployer, otherAccount } = await loadFixture(deployCarBookletFixture);
+      expect(await carBooklet.owner()).to.equal(otherAccount.address);
     });
 
   });
@@ -31,37 +31,37 @@ describe("CarBooklet", function () {
     describe("Authorization", function () {
 
       it("Should add an authorized address and check is the address is authorized", async function () {
-        const { carBooklet, owner, otherAccount } = await loadFixture(deployCarBookletFixture);
-        await carBooklet.allowAuthorization(otherAccount.address);
-        expect(await carBooklet.hasAuthorizedCredential(otherAccount.address)).to.equal(true);
+        const { carBooklet, deployer, otherAccount } = await loadFixture(deployCarBookletFixture);
+        await carBooklet.connect(otherAccount).allowAuthorization(deployer.address);
+        expect(await carBooklet.connect(otherAccount).hasAuthorizedCredential(deployer.address)).to.equal(true);
       });
 
       it("Should revoke an authorized address", async function () {
-        const { carBooklet, owner, otherAccount } = await loadFixture(deployCarBookletFixture);
-        await carBooklet.allowAuthorization(otherAccount.address);
-        await carBooklet.revokeAuthorization(otherAccount.address);
-        expect(await carBooklet.hasAuthorizedCredential(otherAccount.address)).to.equal(false);
+        const { carBooklet, deployer, otherAccount } = await loadFixture(deployCarBookletFixture);
+        await carBooklet.connect(otherAccount).allowAuthorization(deployer.address);
+        await carBooklet.connect(otherAccount).revokeAuthorization(deployer.address);
+        expect(await carBooklet.connect(otherAccount.address).hasAuthorizedCredential(deployer.address)).to.equal(false);
       });
     });
 
     describe("Records", function () {
 
       it("Should receive and store the maintenance records to carBooklet", async function () {
-        const { carBooklet, owner, otherAccount } = await loadFixture(deployCarBookletFixture);
-        await carBooklet.allowAuthorization(otherAccount.address);
+        const { carBooklet, deployer, otherAccount } = await loadFixture(deployCarBookletFixture);
+        await carBooklet.connect(otherAccount).allowAuthorization(deployer.address);
 
         const description = "First maintenance";
         const mileage = 3000;
 
-        await carBooklet.connect(otherAccount).addMaintenanceRecord(mileage, description);
+        await carBooklet.connect(deployer).addMaintenanceRecord(mileage, description);
         const currRecord = carBooklet.record();
         expect((await currRecord).mileage.toNumber()).to.equal(mileage);
         expect((await currRecord).description).to.equal(description);
       });
 
       it("Should store a previous maintenance record", async function () {
-        const { carBooklet, owner, otherAccount } = await loadFixture(deployCarBookletFixture);
-        await carBooklet.allowAuthorization(otherAccount.address);
+        const { carBooklet, deployer, otherAccount } = await loadFixture(deployCarBookletFixture);
+        await carBooklet.connect(otherAccount).allowAuthorization(deployer.address);
 
         const firstDescription = "First maintenance";
         const firstMileage = 3000;
@@ -69,8 +69,8 @@ describe("CarBooklet", function () {
         const secondDescription = "Second maintenance";
         const secondMileage = 6000;
 
-        await carBooklet.connect(otherAccount).addMaintenanceRecord(firstMileage, firstDescription);
-        await carBooklet.connect(otherAccount).addMaintenanceRecord(secondMileage, secondDescription);
+        await carBooklet.connect(deployer).addMaintenanceRecord(firstMileage, firstDescription);
+        await carBooklet.connect(deployer).addMaintenanceRecord(secondMileage, secondDescription);
 
         const previousRecord = carBooklet.previousRecord();
         expect((await previousRecord).mileage.toNumber()).to.equal(firstMileage);
@@ -78,8 +78,8 @@ describe("CarBooklet", function () {
       });
 
       it("Should avoid to store new records with lower mileage", async function () {
-        const { carBooklet, owner, otherAccount } = await loadFixture(deployCarBookletFixture);
-        await carBooklet.allowAuthorization(otherAccount.address);
+        const { carBooklet, deployer, otherAccount } = await loadFixture(deployCarBookletFixture);
+        await carBooklet.connect(otherAccount).allowAuthorization(deployer.address);
 
         const firstDescription = "First maintenance";
         const firstMileage = 3000;
@@ -87,22 +87,22 @@ describe("CarBooklet", function () {
         const secondDescription = "Second maintenance";
         const secondMileage = 2000;
 
-        await carBooklet.connect(otherAccount).addMaintenanceRecord(firstMileage, firstDescription);
-        await expect(carBooklet.connect(otherAccount).addMaintenanceRecord(secondMileage, secondDescription)).to.be.revertedWith('Mileage is incorrect.');
+        await carBooklet.connect(deployer).addMaintenanceRecord(firstMileage, firstDescription);
+        await expect(carBooklet.connect(deployer).addMaintenanceRecord(secondMileage, secondDescription)).to.be.revertedWith('Mileage is incorrect.');
       });
     });
 
     describe("Events", function () {
       it("Should emit an event on record creation", async function () {
-        const { carBooklet, owner, otherAccount } = await loadFixture(deployCarBookletFixture);
-        await carBooklet.allowAuthorization(otherAccount.address);
+        const { carBooklet, deployer, otherAccount } = await loadFixture(deployCarBookletFixture);
+        await carBooklet.connect(otherAccount).allowAuthorization(deployer.address);
 
         const description = "First maintenance";
         const mileage = 3000;
 
-        await expect(carBooklet.connect(otherAccount).addMaintenanceRecord(mileage, description))
+        await expect(carBooklet.connect(deployer).addMaintenanceRecord(mileage, description))
           .to.emit(carBooklet, "RecordCreated")
-          .withArgs(otherAccount.address);
+          .withArgs(deployer.address);
       });
     });
   });

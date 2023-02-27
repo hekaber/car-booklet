@@ -1,60 +1,81 @@
+import { useContext, useEffect, useState } from 'react';
 import type { BlockTag } from '@ethersproject/abstract-provider';
-import { useEffect, useState } from 'react';
-import { Circles } from 'react-loader-spinner';
-import AlchemyApi from '../utils/AlchemyApi';
+import { UserContext } from '../App';
+import { getContractsByAddress } from '../classes/contracts/Utilities';
 
-const alchemy = AlchemyApi.getAlchemyInstance();
+import AppBar from '@mui/material/AppBar';
+import Grid from '@mui/material/Grid';
+import Paper from '@mui/material/Paper';
+import Toolbar from '@mui/material/Toolbar';
+import { Circles } from 'react-loader-spinner';
+import SearchIcon from '@mui/icons-material/Search';
+import RefreshIcon from '@mui/icons-material/Refresh';
+import TextField from '@mui/material/TextField';
+import Button from '@mui/material/Button';
+import Tooltip from '@mui/material/Tooltip';
+import IconButton from '@mui/material/IconButton';
+import Typography from '@mui/material/Typography';
+import CarBookletProvider from '../classes/contracts/CarBookletProvider';
+
 
 const Home = () => {
 
-
+    const userContext = useContext(UserContext);
     const [blockNumber, setBlockNumber] = useState<BlockTag>("");
-    const [loading, setLoading] = useState(true);
+    const [loading, setLoading] = useState<boolean>(true);
 
-    async function getBlockNumber() {
-        const bNum: BlockTag = await alchemy.core.getBlockNumber();
-        setBlockNumber(bNum);
-        setLoading(false);
+    const carBookletProvider = new CarBookletProvider();
+    const deployBooklet = async () => {
+        const owner = await carBookletProvider.getVersion();
+        console.log(owner);
     }
 
     useEffect(() => {
-        getBlockNumber();
+        getContractsByAddress(userContext.account);
+
     }, []);
 
     return (
-        <>
-            <div>HELLO</div>
-        </>
-        // <>
-        //     <div className="block-container">
-        //         <div className="title">Latest Block</div>
-        //         <div className="block-number">Block Number:
-        //             <Circles
-        //                 height="20"
-        //                 width="20"
-        //                 color="#000000"
-        //                 ariaLabel="circles-loading"
-        //                 wrapperStyle={{
-        //                     display: loading ? 'inline' : 'none',
-        //                     marginLeft: '1em'
-        //                 }}
-        //                 wrapperClass=""
-        //                 visible={loading}
-        //             />
-        //             {!loading && blockNumber}
-        //         </div>
-        //         <BlockInfo
-        //             blockNumber={blockNumber}
-        //         />
-        //     </div>
-        //     <div className="block-container">
-        //         <div className="subtitle">Transactions</div>
-        //         <BlockTransactions
-        //             blockNumber={blockNumber}
-        //         />
-        //     </div>
-        //     <ContractForm />
-        // </>
+        <Paper sx={{ maxWidth: 936, margin: 'auto', overflow: 'hidden' }}>
+            <AppBar
+                position="static"
+                color="default"
+                elevation={0}
+                sx={{ borderBottom: '1px solid rgba(0, 0, 0, 0.12)' }}
+            >
+                <Toolbar>
+                    <Grid container spacing={2} alignItems="center">
+                        <Grid item>
+                            <SearchIcon color="inherit" sx={{ display: 'block' }} />
+                        </Grid>
+                        <Grid item xs>
+                            <TextField
+                                fullWidth
+                                placeholder="Search by email address, phone number, or user UID"
+                                InputProps={{
+                                    disableUnderline: true,
+                                    sx: { fontSize: 'default' },
+                                }}
+                                variant="standard"
+                            />
+                        </Grid>
+                        <Grid item>
+                            <Button variant="contained" sx={{ mr: 1 }} onClick={deployBooklet}>
+                                Add booklet
+                            </Button>
+                            <Tooltip title="Reload">
+                                <IconButton>
+                                    <RefreshIcon color="inherit" sx={{ display: 'block' }} />
+                                </IconButton>
+                            </Tooltip>
+                        </Grid>
+                    </Grid>
+                </Toolbar>
+            </AppBar>
+            <Typography sx={{ my: 5, mx: 2 }} color="text.secondary" align="center">
+                No booklets for this wallet yet
+            </Typography>
+        </Paper>
     );
 };
 

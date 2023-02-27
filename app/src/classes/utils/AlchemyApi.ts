@@ -5,9 +5,8 @@ class AlchemyApi {
     private static alchemyInstance: Alchemy;
     private static readonly settings = {
         apiKey: import.meta.env.VITE_APP_ALCHEMY_API_KEY,
-        network: Network.ETH_MAINNET,
+        network: Network.ETH_GOERLI,
     };
-
     private constructor() { }
 
     static getAlchemyInstance(): Alchemy {
