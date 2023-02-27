@@ -1,8 +1,7 @@
 import { useContext, useEffect, useState } from 'react';
 import type { BlockTag } from '@ethersproject/abstract-provider';
-import abi from "../classes/abi/CarBooklet.json";
 import { UserContext } from '../App';
-import AlchemyApi from '../classes/utils/AlchemyApi';
+import { getContractsByAddress } from '../classes/contracts/Utilities';
 
 import AppBar from '@mui/material/AppBar';
 import Grid from '@mui/material/Grid';
@@ -16,10 +15,8 @@ import Button from '@mui/material/Button';
 import Tooltip from '@mui/material/Tooltip';
 import IconButton from '@mui/material/IconButton';
 import Typography from '@mui/material/Typography';
-import { AssetTransfersCategory } from 'alchemy-sdk';
+import CarBookletProvider from '../classes/contracts/CarBookletProvider';
 
-
-const alchemy = AlchemyApi.getAlchemyInstance();
 
 const Home = () => {
 
@@ -27,40 +24,15 @@ const Home = () => {
     const [blockNumber, setBlockNumber] = useState<BlockTag>("");
     const [loading, setLoading] = useState<boolean>(true);
 
-    async function getContractsByAddress() {
-        const addr = userContext.account;
-        console.log("TOTO");
-        try {
-            const providerAddress = import.meta.env.VITE_CONTRACT_PROVIDER_ADDRESS;
-            console.log("ADDR_USER", addr);
-            console.log("PROVIDER_ADDR", providerAddress);
-            
-            const txHashes = await alchemy.core.getAssetTransfers({
-                fromBlock: "0x0",
-                fromAddress: addr,
-                toAddress: import.meta.env.VITE_CONTRACT_PROVIDER_ADDRESS,
-                category: [
-                    AssetTransfersCategory.EXTERNAL,
-                    AssetTransfersCategory.INTERNAL,
-                    AssetTransfersCategory.ERC20,
-                    AssetTransfersCategory.ERC721
-                ]
-            });
-            console.log("Transactions", txHashes);
-        } catch (error) {
-            console.log(error);
-        }
-        const bNum: BlockTag = await alchemy.core.getBlockNumber();
-        setBlockNumber(bNum);
-        setLoading(false);
-    }
-
+    const carBookletProvider = new CarBookletProvider();
     const deployBooklet = async () => {
-
+        const owner = await carBookletProvider.getVersion();
+        console.log(owner);
     }
 
     useEffect(() => {
-        getContractsByAddress();
+        getContractsByAddress(userContext.account);
+
     }, []);
 
     return (

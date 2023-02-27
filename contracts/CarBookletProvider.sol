@@ -11,10 +11,11 @@ contract CarBookletProvider is Authorize {
 
     event BookletCreated(address bookletAddr);
 
-    function provide(address bookletOwner)
-        external
-        isOwner
-    {
+    function getVersion() external pure returns (string memory) {
+        return "v1";
+    }
+
+    function provide(address bookletOwner) external isOwner {
         CarBooklet booklet = new CarBooklet(bookletOwner);
         emit BookletCreated(address(booklet));
     }
