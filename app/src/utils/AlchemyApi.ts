@@ -10,7 +10,6 @@ class AlchemyApi {
     private constructor() { }
 
     static getAlchemyInstance(): Alchemy {
-        console.log(AlchemyApi.settings);
         if (!AlchemyApi.alchemyInstance) {
             AlchemyApi.alchemyInstance = new Alchemy(AlchemyApi.settings)
         }
