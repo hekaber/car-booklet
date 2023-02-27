@@ -17,7 +17,7 @@ function Layout() {
   );
 }
 interface IUserContextProps {
-  account: string | undefined;
+  account: string;
   setAccount: React.Dispatch<React.SetStateAction<string>>;
   web3: Web3 | null;
   setWeb3: React.Dispatch<React.SetStateAction<Web3 | null>>;
@@ -32,7 +32,8 @@ export const UserContext = createContext<IUserContextProps>({
 
 function App() {
 
-  const [account, setAccount] = useState<string>("");
+  const storedAccount = sessionStorage.getItem('account') ?? "";
+  const [account, setAccount] = useState<string>(storedAccount);
   const [web3, setWeb3] = useState<Web3 | null>(null);
 
   return (

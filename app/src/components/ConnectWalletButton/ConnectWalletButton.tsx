@@ -25,6 +25,7 @@ const ConnectWalletButton = () => {
                     const accounts = await web3.eth.getAccounts();
                     userContext.setWeb3(web3);
                     userContext.setAccount(accounts[0]);
+                    sessionStorage.setItem("account", accounts[0]);
                 }
             } catch (error: any) {
                 alertMessage = error.message;
