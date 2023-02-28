@@ -1,5 +1,5 @@
 import abi from '../abi/CarBookletProvider.json';
-import { ethers, Contract } from "ethers";
+import { ethers, Contract, Event } from "ethers";
 
 class CarBookletProvider {
     private contractABI = abi.abi;
@@ -19,8 +19,15 @@ class CarBookletProvider {
     }
 
     public async getVersion(): Promise<string> {
-        const version = await this.contract.getVersion();
+        const version: string = await this.contract.getVersion();
         return version;
+    }
+
+    public async createBooklet(owner: string): Promise<string | undefined> {
+        console.log(owner);
+        await this.contract.provide(owner);
+        const events: Array<Event> = await this.contract.queryFilter("BookletCreated");
+        return events.length > 0 && Array.isArray(events[0].args) && events[0].args[0] ? events[0].args[0] : "";
     }
 }
 

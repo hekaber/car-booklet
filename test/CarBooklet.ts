@@ -53,28 +53,13 @@ describe("CarBooklet", function () {
         const description = "First maintenance";
         const mileage = 3000;
 
-        await carBooklet.connect(deployer).addMaintenanceRecord(mileage, description);
-        const currRecord = carBooklet.record();
+        const tx = await carBooklet.connect(deployer).addMaintenanceRecord(mileage, description);
+        const events = await carBooklet.queryFilter("RecordCreated");
+        const recordId = events[0].args[0];
+        const currRecord = await carBooklet.getMaintenanceRecord(recordId);
+
         expect((await currRecord).mileage.toNumber()).to.equal(mileage);
         expect((await currRecord).description).to.equal(description);
-      });
-
-      it("Should store a previous maintenance record", async function () {
-        const { carBooklet, deployer, otherAccount } = await loadFixture(deployCarBookletFixture);
-        await carBooklet.connect(otherAccount).allowAuthorization(deployer.address);
-
-        const firstDescription = "First maintenance";
-        const firstMileage = 3000;
-
-        const secondDescription = "Second maintenance";
-        const secondMileage = 6000;
-
-        await carBooklet.connect(deployer).addMaintenanceRecord(firstMileage, firstDescription);
-        await carBooklet.connect(deployer).addMaintenanceRecord(secondMileage, secondDescription);
-
-        const previousRecord = carBooklet.previousRecord();
-        expect((await previousRecord).mileage.toNumber()).to.equal(firstMileage);
-        expect((await previousRecord).description).to.equal(firstDescription);
       });
 
       it("Should avoid to store new records with lower mileage", async function () {
@@ -88,6 +73,7 @@ describe("CarBooklet", function () {
         const secondMileage = 2000;
 
         await carBooklet.connect(deployer).addMaintenanceRecord(firstMileage, firstDescription);
+
         await expect(carBooklet.connect(deployer).addMaintenanceRecord(secondMileage, secondDescription)).to.be.revertedWith('Mileage is incorrect.');
       });
     });
@@ -99,10 +85,11 @@ describe("CarBooklet", function () {
 
         const description = "First maintenance";
         const mileage = 3000;
+        const mapId = 1;
 
         await expect(carBooklet.connect(deployer).addMaintenanceRecord(mileage, description))
           .to.emit(carBooklet, "RecordCreated")
-          .withArgs(deployer.address);
+          .withArgs(mapId);
       });
     });
   });

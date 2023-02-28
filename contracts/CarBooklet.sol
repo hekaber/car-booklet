@@ -12,22 +12,37 @@ contract CarBooklet is Authorize {
         string description;
         uint256 timestamp;
     }
+    uint256 mapId;
+    mapping(uint256 => MaintenanceRecord) private maintenanceRecords;
+    // MaintenanceRecord public record = MaintenanceRecord(0, "", 0);
+    // MaintenanceRecord public previousRecord;
 
-    MaintenanceRecord public record = MaintenanceRecord(0, "", 0);
-    MaintenanceRecord public previousRecord;
-    event RecordCreated(address);
+    event RecordCreated(uint256);
 
     constructor(address _owner) {
         owner = _owner;
+        authorized[owner] = true;
     }
 
     function addMaintenanceRecord(uint256 mileage, string memory description)
         external
         isAuthorized
     {
+        MaintenanceRecord memory record = maintenanceRecords[mapId];
         require(mileage > record.mileage, "Mileage is incorrect.");
-        previousRecord = record;
         record = MaintenanceRecord(mileage, description, block.timestamp);
-        emit RecordCreated(msg.sender);
+        ++mapId;
+        maintenanceRecords[mapId] = record;
+
+        emit RecordCreated(mapId);
+    }
+
+    function getMaintenanceRecord(uint256 _mapId)
+        external
+        view
+        isAuthorized
+        returns (MaintenanceRecord memory record)
+    {
+        return maintenanceRecords[_mapId];
     }
 }
