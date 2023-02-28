@@ -5,6 +5,7 @@ import ListItemIcon from '@mui/material/ListItemIcon/ListItemIcon';
 import { Folder } from '@mui/icons-material';
 import ListItemText from '@mui/material/ListItemText/ListItemText';
 import { Link } from 'react-router-dom';
+import './BookletList.scss';
 
 interface BookletListProps {
     items: any[];
@@ -27,17 +28,17 @@ export default function BookletList(props: BookletListProps) {
                     </Typography>
                     : items.map((item, index) => {
                         return (
-                            <ListItem key={index} >
-                                <ListItemIcon>
-                                    <Folder />
-                                </ListItemIcon>
-                                <Link to="">
-                                    <ListItemText
-                                        primary={item}
-                                        secondary="booklet"
-                                    />
-                                </Link>
-                            </ListItem>
+                            <Link className="list-link" key={index} to="">
+                                <ListItem className="list-item">
+                                    <ListItemIcon>
+                                        <Folder />
+                                    </ListItemIcon>
+                                        <ListItemText
+                                            primary={item}
+                                            secondary="booklet"
+                                        />
+                                </ListItem>
+                            </Link>
                         );
                     })
                 }
