@@ -40,6 +40,18 @@ describe("CarBookletProvider", function () {
 
                 expect(await carBooklet.owner()).to.equal(otherAccount.address);
             });
+
+            it("Should create a mapping data that binds the owner with his booklets.", async function () {
+
+                const { carBookletProvider, owner, otherAccount } = await loadFixture(deployCarBookletProviderFixture);
+                await carBookletProvider.provide(otherAccount.address);
+                const events = await carBookletProvider.queryFilter("BookletCreated");
+                const CarBooklet = await ethers.getContractFactory("CarBooklet");
+                const carBooklet = await CarBooklet.attach(events[0].args[0]);
+                
+                const storedContract = await carBookletProvider.getBooklets(otherAccount.address);
+                expect(storedContract[0]).to.equal(carBooklet.address);
+            });
         });
     });
 });
