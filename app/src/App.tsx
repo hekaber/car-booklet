@@ -48,7 +48,7 @@ function App() {
         <Routes>
           <Route path={HOME_ROUTE} element={<Layout />}>
             <Route index element={<Home />} />
-            <Route path={BOOKLET_ROUTE} element={<Booklet />} />
+            <Route path={`${BOOKLET_ROUTE}:bookletAddress`} element={<Booklet />} />
             <Route path={CONTACT_ROUTE} element={<Contact />} />
           </Route>
         </Routes>
