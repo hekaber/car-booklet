@@ -7,33 +7,36 @@ import AppBar from '@mui/material/AppBar';
 import Grid from '@mui/material/Grid';
 import Paper from '@mui/material/Paper';
 import Toolbar from '@mui/material/Toolbar';
-import { Circles } from 'react-loader-spinner';
 import SearchIcon from '@mui/icons-material/Search';
 import RefreshIcon from '@mui/icons-material/Refresh';
 import TextField from '@mui/material/TextField';
 import Button from '@mui/material/Button';
 import Tooltip from '@mui/material/Tooltip';
 import IconButton from '@mui/material/IconButton';
-import Typography from '@mui/material/Typography';
 import CarBookletProvider from '../classes/contracts/CarBookletProvider';
+import BookletList from '../components/BookletList/BookletList';
 
 
 const Home = () => {
 
     const userContext = useContext(UserContext);
+    const [booklets, setBooklets] = useState<Array<string>>([]);
     const [blockNumber, setBlockNumber] = useState<BlockTag>("");
     const [loading, setLoading] = useState<boolean>(true);
 
     const carBookletProvider = new CarBookletProvider();
     const deployBooklet = async () => {
-        const owner = await carBookletProvider.getVersion();
-        console.log(owner);
+        const contractAddress = await carBookletProvider.createBooklet(userContext.account);
+        const txs = await getContractsByAddress(userContext.account);
+        console.log("CONTRACT CREATED", contractAddress);
+        console.log("TXs", txs);
     }
 
-    useEffect(() => {
-        getContractsByAddress(userContext.account);
-
-    }, []);
+    const getBooklets = async () => {
+        const fetchedBooklets: Array<string> = await carBookletProvider.getBooklets(userContext.account);
+        setBooklets(fetchedBooklets);
+    }
+    useEffect(() => { getBooklets(); }, []);
 
     return (
         <Paper sx={{ maxWidth: 936, margin: 'auto', overflow: 'hidden' }}>
@@ -72,9 +75,11 @@ const Home = () => {
                     </Grid>
                 </Toolbar>
             </AppBar>
-            <Typography sx={{ my: 5, mx: 2 }} color="text.secondary" align="center">
-                No booklets for this wallet yet
-            </Typography>
+            <BookletList
+                items={booklets}
+                title="My booklets"
+                emptyMessage='No booklets available'
+            />
         </Paper>
     );
 };

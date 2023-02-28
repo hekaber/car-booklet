@@ -17,12 +17,14 @@ contract CarBookletProvider is Authorize {
         return "v1";
     }
 
+    // TODO: allow also authorized people to access this
     function provide(address bookletOwner) external isOwner {
         CarBooklet booklet = new CarBooklet(bookletOwner);
         userBooklets[bookletOwner].push(address(booklet));
         emit BookletCreated(address(booklet));
     }
 
+    // TODO: allow also authorized people to access this
     function getBooklets(address bookletOwner)
         external
         view
