@@ -2,10 +2,11 @@ import { useState, createContext, useEffect } from "react";
 import { Route, Routes, Outlet } from "react-router-dom";
 import './App.css'
 import Home from './routes/Home';
-import CarDashboard from './routes/CarDashboard';
+import Booklet from './routes/Booklet';
 import Contact from './routes/Contact';
 import Paperbase from "./components/Paperbase/Paperbase";
 import Web3 from "web3";
+import { HOME_ROUTE, CONTACT_ROUTE, BOOKLET_ROUTE } from './classes/utils/constants';
 
 function Layout() {
   return (
@@ -45,10 +46,10 @@ function App() {
     }}>
       <div className="App">
         <Routes>
-          <Route path='/' element={<Layout />}>
+          <Route path={HOME_ROUTE} element={<Layout />}>
             <Route index element={<Home />} />
-            <Route path="/cardashboard/" element={<CarDashboard />} />
-            <Route path="/contact/" element={<Contact />} />
+            <Route path={BOOKLET_ROUTE} element={<Booklet />} />
+            <Route path={CONTACT_ROUTE} element={<Contact />} />
           </Route>
         </Routes>
       </div>

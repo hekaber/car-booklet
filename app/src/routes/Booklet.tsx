@@ -1,15 +1,15 @@
 import { UserContext } from '../App';
 import { useContext, useState } from 'react';
 
-const CarDashboard = () => {
+const Booklet = () => {
     const userContext = useContext(UserContext);
 
     return (
         <div className="about">
-            Car dashboard
+            Booklet
             { userContext.account}
         </div>
     );
 };
 
-export default CarDashboard;
+export default Booklet;

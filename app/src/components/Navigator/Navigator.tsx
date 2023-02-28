@@ -19,6 +19,7 @@ import SettingsInputComponentIcon from '@mui/icons-material/SettingsInputCompone
 import TimerIcon from '@mui/icons-material/Timer';
 import SettingsIcon from '@mui/icons-material/Settings';
 import PhonelinkSetupIcon from '@mui/icons-material/PhonelinkSetup';
+import { HOME_ROUTE, CONTACT_ROUTE, BOOKLET_ROUTE } from '../../classes/utils/constants';
 
 const categories = [
     {
@@ -27,10 +28,10 @@ const categories = [
             {
                 id: 'Home',
                 icon: <PeopleIcon />,
-                link: '/'
+                link: HOME_ROUTE
             },
-            { id: 'My Car', icon: <DnsRoundedIcon />, link: '/cardashboard' },
-            { id: 'Storage', icon: <PermMediaOutlinedIcon /> },
+            { id: 'Booklets', icon: <DnsRoundedIcon />, link: BOOKLET_ROUTE },
+            { id: 'Contact', icon: <PermMediaOutlinedIcon />, link: CONTACT_ROUTE },
             { id: 'Hosting', icon: <PublicIcon /> },
             { id: 'Functions', icon: <SettingsEthernetIcon /> },
             {
