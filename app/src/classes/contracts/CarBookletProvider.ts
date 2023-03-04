@@ -1,20 +1,13 @@
 import abi from '../abi/CarBookletProvider.json';
-import { ethers, Contract, Event } from "ethers";
+import { Event } from "ethers";
+import Acontract from './Acontract';
 
-class CarBookletProvider {
-    private contractABI = abi.abi;
-    private contract: Contract;
+class CarBookletProvider extends Acontract{
 
     constructor() {
-
-        const { ethereum } = window as any;
-
-        const provider = new ethers.providers.Web3Provider(ethereum);
-        const signer = provider.getSigner();
-        this.contract = new Contract(
-            import.meta.env.VITE_CONTRACT_PROVIDER_ADDRESS,
-            this.contractABI,
-            signer
+        super(
+            abi.abi,
+            import.meta.env.VITE_CONTRACT_PROVIDER_ADDRESS
         );
     }
 
