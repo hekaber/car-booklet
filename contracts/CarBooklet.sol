@@ -7,16 +7,14 @@ import {Authorize} from "./utils/Authorize.sol";
 // import "hardhat/console.sol";
 
 contract CarBooklet is Authorize {
+
     struct MaintenanceRecord {
         uint256 mileage;
         string description;
         uint256 timestamp;
     }
-    uint256 mapId;
+    uint256 public mapId;
     mapping(uint256 => MaintenanceRecord) private maintenanceRecords;
-    // MaintenanceRecord public record = MaintenanceRecord(0, "", 0);
-    // MaintenanceRecord public previousRecord;
-
     event RecordCreated(uint256);
 
     constructor(address _owner) {

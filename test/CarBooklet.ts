@@ -76,6 +76,22 @@ describe("CarBooklet", function () {
 
         await expect(carBooklet.connect(deployer).addMaintenanceRecord(secondMileage, secondDescription)).to.be.revertedWith('Mileage is incorrect.');
       });
+
+      it("Should get the top map Id", async function () {
+        const { carBooklet, deployer, otherAccount } = await loadFixture(deployCarBookletFixture);
+        await carBooklet.connect(otherAccount).allowAuthorization(deployer.address);
+
+        const firstDescription = "First maintenance";
+        const firstMileage = 3000;
+
+        const secondDescription = "Second maintenance";
+        const secondMileage = 10000;
+
+        await carBooklet.connect(deployer).addMaintenanceRecord(firstMileage, firstDescription);
+        await carBooklet.connect(deployer).addMaintenanceRecord(secondMileage, secondDescription);
+
+        expect(await carBooklet.mapId()).to.be.equal(2);
+      });
     });
 
     describe("Events", function () {
