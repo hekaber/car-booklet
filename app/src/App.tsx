@@ -2,11 +2,12 @@ import { useState, createContext, useEffect } from "react";
 import { Route, Routes, Outlet } from "react-router-dom";
 import './App.css'
 import Home from './routes/Home';
-import Booklet from './routes/Booklet';
+import Booklet from './routes/Booklet/Booklet';
 import Contact from './routes/Contact';
 import Paperbase from "./components/Paperbase/Paperbase";
 import Web3 from "web3";
-import { HOME_ROUTE, CONTACT_ROUTE, BOOKLET_ROUTE } from './classes/utils/constants';
+import { HOME_ROUTE, CONTACT_ROUTE, BOOKLET_ROUTE, BOOKLET_LIST_ROUTE } from './classes/utils/constants';
+import Booklets from "./routes/Booklet/Booklets";
 
 function Layout() {
   return (
@@ -49,6 +50,7 @@ function App() {
           <Route path={HOME_ROUTE} element={<Layout />}>
             <Route index element={<Home />} />
             <Route path={`${BOOKLET_ROUTE}:bookletAddress`} element={<Booklet />} />
+            <Route path={`${BOOKLET_LIST_ROUTE}`} element={<Booklets />} />
             <Route path={CONTACT_ROUTE} element={<Contact />} />
           </Route>
         </Routes>

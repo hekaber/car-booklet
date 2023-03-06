@@ -1,7 +1,6 @@
 import { useContext, useEffect, useState } from 'react';
 import type { BlockTag } from '@ethersproject/abstract-provider';
 import { UserContext } from '../App';
-import { getContractsByAddress } from '../classes/contracts/Utilities';
 
 import AppBar from '@mui/material/AppBar';
 import Grid from '@mui/material/Grid';
@@ -14,29 +13,15 @@ import Button from '@mui/material/Button';
 import Tooltip from '@mui/material/Tooltip';
 import IconButton from '@mui/material/IconButton';
 import CarBookletProvider from '../classes/contracts/CarBookletProvider';
-import BookletList from '../components/BookletList/BookletList';
 
 
 const Home = () => {
 
     const userContext = useContext(UserContext);
-    const [booklets, setBooklets] = useState<Array<string>>([]);
     const [blockNumber, setBlockNumber] = useState<BlockTag>("");
     const [loading, setLoading] = useState<boolean>(true);
 
     const carBookletProvider = new CarBookletProvider();
-    const deployBooklet = async () => {
-        const contractAddress = await carBookletProvider.createBooklet(userContext.account);
-        const txs = await getContractsByAddress(userContext.account);
-        console.log("CONTRACT CREATED", contractAddress);
-        console.log("TXs", txs);
-    }
-
-    const getBooklets = async () => {
-        const fetchedBooklets: Array<string> = await carBookletProvider.getBooklets(userContext.account);
-        setBooklets(fetchedBooklets);
-    }
-    useEffect(() => { getBooklets(); }, []);
 
     return (
         <Paper sx={{ maxWidth: 936, margin: 'auto', overflow: 'hidden' }}>
@@ -63,9 +48,6 @@ const Home = () => {
                             />
                         </Grid>
                         <Grid item>
-                            <Button variant="contained" sx={{ mr: 1 }} onClick={deployBooklet}>
-                                Add booklet
-                            </Button>
                             <Tooltip title="Reload">
                                 <IconButton>
                                     <RefreshIcon color="inherit" sx={{ display: 'block' }} />
@@ -75,11 +57,6 @@ const Home = () => {
                     </Grid>
                 </Toolbar>
             </AppBar>
-            <BookletList
-                items={booklets}
-                title="My booklets"
-                emptyMessage='No booklets available'
-            />
         </Paper>
     );
 };

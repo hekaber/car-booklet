@@ -13,7 +13,7 @@ import HomeIcon from '@mui/icons-material/Home';
 import PeopleIcon from '@mui/icons-material/People';
 import DnsRoundedIcon from '@mui/icons-material/DnsRounded';
 import PermMediaOutlinedIcon from '@mui/icons-material/PhotoSizeSelectActual';
-import { HOME_ROUTE, CONTACT_ROUTE, BOOKLETS_ROUTE } from '../../classes/utils/constants';
+import { HOME_ROUTE, CONTACT_ROUTE, BOOKLET_ROUTE, BOOKLET_LIST_ROUTE } from '../../classes/utils/constants';
 
 const categories = [
     {
@@ -24,7 +24,7 @@ const categories = [
                 icon: <PeopleIcon />,
                 link: HOME_ROUTE
             },
-            { id: 'Booklets', icon: <DnsRoundedIcon />, link: BOOKLETS_ROUTE },
+            { id: 'Booklets', icon: <DnsRoundedIcon />, link: BOOKLET_LIST_ROUTE },
             { id: 'Contact', icon: <PermMediaOutlinedIcon />, link: CONTACT_ROUTE },
         ],
     }

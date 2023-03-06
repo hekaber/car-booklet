@@ -1,7 +1,7 @@
 import { useEffect, useRef, useState } from 'react';
 import { useParams } from 'react-router-dom';
-import CarBooklet from '../classes/contracts/CarBooklet';
-import MaintenanceCard from '../components/MaintenanceCard/MaintenanceCard';
+import CarBooklet from '../../classes/contracts/CarBooklet';
+import MaintenanceCard from '../../components/MaintenanceCard/MaintenanceCard';
 import {
     Accordion, AccordionDetails, AccordionSummary,
     Button, Box, InputAdornment, TextField,
@@ -21,7 +21,6 @@ const Booklet = () => {
 
     const handleSubmit = async () => {
         const recordId = await carBooklet?.addMaintenanceRecord(mileage, description);
-        console.log(recordId);
     }
 
     const init = async () => {
