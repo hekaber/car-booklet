@@ -13,10 +13,7 @@ import HomeIcon from '@mui/icons-material/Home';
 import PeopleIcon from '@mui/icons-material/People';
 import DnsRoundedIcon from '@mui/icons-material/DnsRounded';
 import PermMediaOutlinedIcon from '@mui/icons-material/PhotoSizeSelectActual';
-import TimerIcon from '@mui/icons-material/Timer';
-import SettingsIcon from '@mui/icons-material/Settings';
-import PhonelinkSetupIcon from '@mui/icons-material/PhonelinkSetup';
-import { HOME_ROUTE, CONTACT_ROUTE, BOOKLET_ROUTE } from '../../classes/utils/constants';
+import { HOME_ROUTE, CONTACT_ROUTE, BOOKLETS_ROUTE } from '../../classes/utils/constants';
 
 const categories = [
     {
@@ -27,18 +24,10 @@ const categories = [
                 icon: <PeopleIcon />,
                 link: HOME_ROUTE
             },
-            { id: 'Booklets', icon: <DnsRoundedIcon />, link: BOOKLET_ROUTE },
+            { id: 'Booklets', icon: <DnsRoundedIcon />, link: BOOKLETS_ROUTE },
             { id: 'Contact', icon: <PermMediaOutlinedIcon />, link: CONTACT_ROUTE },
         ],
-    },
-    {
-        id: 'Quality',
-        children: [
-            { id: 'Analytics', icon: <SettingsIcon /> },
-            { id: 'Performance', icon: <TimerIcon /> },
-            { id: 'Test Lab', icon: <PhonelinkSetupIcon /> },
-        ],
-    },
+    }
 ];
 
 const item = {
