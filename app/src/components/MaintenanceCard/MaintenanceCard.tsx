@@ -1,3 +1,4 @@
+import { Card, CardContent, Typography } from "@mui/material";
 import { useEffect, useState } from "react";
 import CarBooklet from "../../classes/contracts/CarBooklet";
 import { IMaintenanceRecord } from "../../classes/utils/Interfaces";
@@ -22,11 +23,21 @@ const MaintenanceCard = (props: IMCProps) => {
     useEffect(() => { getMaintenanceData() }, []);
 
     return (
-        <>
-            <div>Mileage: {maintenance?.mileage }</div>
-            <div>Description: { maintenance?.description}</div>
-            <div>Time: { maintenance?.timestamp}</div>
-        </>
+        <Card sx={{ minWidth: 275 , marginBottom: 2}}>
+            <CardContent>
+                <Typography variant="h5" component="div">
+                    {maintenance?.mileage} km.
+                </Typography>
+                <Typography sx={{ mb: 1.5 }} color="text.secondary">
+                    <>
+                        Maintenance date: {maintenance?.timestamp ? new Date(maintenance.timestamp * 1000).toDateString() : "Not specified"}
+                    </>
+                </Typography>
+                <Typography variant="body2" color="text.secondary">
+                    { maintenance?.description }
+                </Typography>
+            </CardContent>
+        </Card>
     );
 }
 
