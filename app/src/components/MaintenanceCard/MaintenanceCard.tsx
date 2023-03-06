@@ -15,6 +15,7 @@ const MaintenanceCard = (props: IMCProps) => {
 
     const getMaintenanceData = async () => {
         const data: IMaintenanceRecord | null = carBooklet ? await carBooklet.getMaintenanceRecord(maintenanceId) : null;
+        console.log("Maintenance data", data);
         setMaintenance(data);
     }
 

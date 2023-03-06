@@ -1,4 +1,5 @@
 import abi from '../abi/CarBooklet.json'
+import { BigNumber } from 'ethers';
 import { IMaintenanceRecord } from '../utils/Interfaces';
 import Acontract from './Acontract';
 
@@ -13,14 +14,14 @@ class CarBooklet extends Acontract {
 
     public async getLastMaintenanceId(): Promise<Number> {
 
-        const tx: Number = await this.contract.mapId();
-        return tx;
+        const tx: BigNumber = await this.contract.mapId();
+        return tx.toNumber();
     }
 
     public async getMaintenanceRecord(id: number): Promise<IMaintenanceRecord> {
 
         const tx: any = await this.contract.getMaintenanceRecord(id);
-        return tx;
+        return { mileage: tx.mileage.toNumber(), description: tx.description, timestamp: tx.timestamp.toNumber()};
     }
 
     public async addMaintenanceRecord(mileage: number, description: string) {

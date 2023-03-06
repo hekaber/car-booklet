@@ -25,8 +25,7 @@ const Booklet = () => {
     }
 
     const init = async () => {
-        const lastMapId = carBooklet ? await carBooklet.getLastMaintenanceId() : 0;
-        console.log("last map id", lastMapId);
+        const lastMapId: Number = carBooklet ? await carBooklet.getLastMaintenanceId() : 0;
         setMapId(lastMapId);
     }
 
@@ -40,7 +39,7 @@ const Booklet = () => {
 
         let cards = [];
         for (let i = 1; i <= mapId; i++) {
-            cards.push(<MaintenanceCard maintenanceId={i} carBooklet={carBooklet} />);
+            cards.push(<MaintenanceCard key={i} maintenanceId={i} carBooklet={carBooklet} />);
         }
         return cards;
     }
