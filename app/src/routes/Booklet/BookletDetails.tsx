@@ -10,7 +10,7 @@ import {
 import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
 
 
-const Booklet = () => {
+const BookletDetails = () => {
     const { bookletAddress } = useParams();
     const [mapId, setMapId] = useState<Number>(0);
     const [mileage, setMileage] = useState<number>(0);
@@ -90,4 +90,4 @@ const Booklet = () => {
     );
 };
 
-export default Booklet;
+export default BookletDetails;
