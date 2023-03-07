@@ -1,6 +1,7 @@
 import abi from '../abi/CarBookletProvider.json';
 import { Event } from "ethers";
 import Acontract from './Acontract';
+import { Contract } from 'ethers';
 
 class CarBookletProvider extends Acontract{
 
@@ -11,8 +12,12 @@ class CarBookletProvider extends Acontract{
         );
     }
 
+    private connectOwner(): Contract {
+        return this.contract.connect(import.meta.env.VITE_CONTRACT_PROVIDER_OWNER);
+    }
+
     public async getVersion(): Promise<string> {
-        const version: string = await this.contract.getVersion();
+        const version: string = await this.connectOwner().getVersion();
         return version;
     }
 
