@@ -1,5 +1,5 @@
 // SPDX-License-Identifier: UNLICENSED
-pragma solidity ^0.8.19;
+pragma solidity ^0.8.17;
 
 import {Authorize} from "./utils/Authorize.sol";
 import {CarBooklet} from "./CarBooklet.sol";
@@ -10,13 +10,14 @@ contract CarBookletProvider is Authorize {
 
     constructor() {
         owner = msg.sender;
+        authorized[owner] = true;
     }
 
     event BookletCreated(address bookletAddr);
     event AccessGranted(address requester);
 
     /**
-        Pay 0.1 eth to get access to the protected provider functionalities
+        Pay > 0.1 eth to get access to the protected provider functionalities
     */
     function grantAccess(address requester) external payable {
 

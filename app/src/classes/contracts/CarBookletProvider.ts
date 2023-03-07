@@ -22,7 +22,7 @@ class CarBookletProvider extends Acontract{
     }
 
     public async getBooklets(bookletOwner: string): Promise<Array<string>> {
-        const tx: Array<string> = await this.contract.getBooklets(bookletOwner);
+        const tx: Array<string> = await this.connectOwner().getBooklets(bookletOwner);
         return tx;
     }
 
