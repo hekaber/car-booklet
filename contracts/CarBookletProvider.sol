@@ -30,7 +30,7 @@ contract CarBookletProvider is Authorize {
         emit AccessGranted(requester);
     }
 
-    function checkAccess(address requester) external view returns(bool) {
+    function checkAccess(address requester) external view isOwner returns(bool) {
         return authorized[requester];
     }
 
@@ -44,11 +44,10 @@ contract CarBookletProvider is Authorize {
         emit BookletCreated(address(booklet));
     }
 
-    // TODO: allow also authorized people to access this
     function getBooklets(address bookletOwner)
         external
         view
-        isOwner
+        isAuthorized
         returns (address[] memory booklets)
     {
         booklets = userBooklets[bookletOwner];
