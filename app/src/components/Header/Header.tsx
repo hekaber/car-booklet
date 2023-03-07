@@ -1,19 +1,13 @@
-import AppBar from '@mui/material/AppBar';
-import Grid from '@mui/material/Grid';
-import HelpIcon from '@mui/icons-material/Help';
-import IconButton from '@mui/material/IconButton';
-import MenuIcon from '@mui/icons-material/Menu';
-import NotificationsIcon from '@mui/icons-material/Notifications';
-import Tab from '@mui/material/Tab';
-import Tabs from '@mui/material/Tabs';
-import Toolbar from '@mui/material/Toolbar';
-import Tooltip from '@mui/material/Tooltip';
-import Typography from '@mui/material/Typography';
-import ConnectWalletButton from '../ConnectWalletButton/ConnectWalletButton';
 import { useContext } from 'react';
 import { UserContext } from '../../App';
+import {
+    AppBar, Grid, IconButton, Toolbar, Tooltip, Typography
+} from '@mui/material';
+import MenuIcon from '@mui/icons-material/Menu';
+import NotificationsIcon from '@mui/icons-material/Notifications';
+import HelpIcon from '@mui/icons-material/Help';
+import ConnectWalletButton from '../ConnectWalletButton/ConnectWalletButton';
 
-const lightColor = 'rgba(255, 255, 255, 0.7)';
 
 interface HeaderProps {
     onDrawerToggle: () => void;
@@ -85,14 +79,6 @@ export default function Header(props: HeaderProps) {
                         </Grid>
                     </Grid>
                 </Toolbar>
-            </AppBar>
-            <AppBar component="div" position="static" elevation={0} sx={{ zIndex: 0 }}>
-                <Tabs value={0} textColor="inherit">
-                    <Tab label="Users" />
-                    <Tab label="Sign-in method" />
-                    <Tab label="Templates" />
-                    <Tab label="Usage" />
-                </Tabs>
             </AppBar>
         </>
     );

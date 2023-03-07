@@ -13,11 +13,11 @@ import HomeIcon from '@mui/icons-material/Home';
 import PeopleIcon from '@mui/icons-material/People';
 import DnsRoundedIcon from '@mui/icons-material/DnsRounded';
 import PermMediaOutlinedIcon from '@mui/icons-material/PhotoSizeSelectActual';
-import { HOME_ROUTE, CONTACT_ROUTE, BOOKLET_ROUTE, BOOKLET_LIST_ROUTE } from '../../classes/utils/constants';
+import { HOME_ROUTE, CONTACT_ROUTE, BOOKLET_LIST_ROUTE } from '../../classes/utils/constants';
 
 const categories = [
     {
-        id: 'Build',
+        id: 'Menu',
         children: [
             {
                 id: 'Home',
