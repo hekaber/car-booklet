@@ -2,22 +2,23 @@ import abi from '../abi/CarBookletProvider.json';
 import { Event } from "ethers";
 import Acontract from './Acontract';
 
+const providerOwnerAddress = import.meta.env.VITE_CONTRACT_PROVIDER_OWNER;
 class CarBookletProvider extends Acontract{
 
     constructor() {
         super(
             abi.abi,
-            import.meta.env.VITE_CONTRACT_PROVIDER_ADDRESS
+            providerOwnerAddress
         );
     }
 
     public async getVersion(): Promise<string> {
-        const version: string = await this.contract.getVersion();
+        const version: string = await this.contract.connect(providerOwnerAddress).getVersion();
         return version;
     }
 
     public async getBooklets(bookletOwner: string): Promise<Array<string>> {
-        const tx: Array<string> = await this.contract.getBooklets(bookletOwner);
+        const tx: Array<string> = await this.contract.connect(providerOwnerAddress).getBooklets(bookletOwner);
         return tx;
     }
 
