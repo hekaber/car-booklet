@@ -35,6 +35,7 @@ const ConnectWalletButton = () => {
         else {
             userContext.setWeb3(null);
             userContext.setAccount("");
+            sessionStorage.setItem("account", "");
         }
     }
 
