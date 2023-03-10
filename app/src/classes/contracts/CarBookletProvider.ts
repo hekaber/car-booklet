@@ -12,8 +12,8 @@ class CarBookletProvider extends Acontract{
         );
     }
 
-    private connectOwner(): Contract {
-        return this.contract.connect(import.meta.env.VITE_CONTRACT_PROVIDER_OWNER);
+    public async isAuthorized(account: string | null): Promise<boolean> {
+        return account ? this.connectOwner().hasAuthorizedCredential(account) : false;
     }
 
     public async getVersion(): Promise<string> {
@@ -21,16 +21,20 @@ class CarBookletProvider extends Acontract{
         return version;
     }
 
-    public async getBooklets(bookletOwner: string): Promise<Array<string>> {
+    public async getBooklets(bookletOwner: string | null): Promise<Array<string>> {
         const tx: Array<string> = await this.connectOwner().getBooklets(bookletOwner);
         return tx;
     }
 
-    public async createBooklet(bookletOwner: string): Promise<string | undefined> {
+    public async createBooklet(bookletOwner: string | null): Promise<string | undefined> {
 
         await this.contract.provide(bookletOwner);
         const events: Array<Event> = await this.contract.queryFilter("BookletCreated");
         return events.length > 0 && Array.isArray(events[0].args) && events[0].args[0] ? events[0].args[0] : "";
+    }
+
+    private connectOwner(): Contract {
+        return this.contract.connect(import.meta.env.VITE_CONTRACT_PROVIDER_OWNER);
     }
 }
 

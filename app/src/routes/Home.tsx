@@ -1,6 +1,5 @@
 import { useContext, useEffect, useState } from 'react';
 import type { BlockTag } from '@ethersproject/abstract-provider';
-import { UserContext } from '../App';
 
 import AppBar from '@mui/material/AppBar';
 import Grid from '@mui/material/Grid';
@@ -9,20 +8,16 @@ import Toolbar from '@mui/material/Toolbar';
 import SearchIcon from '@mui/icons-material/Search';
 import RefreshIcon from '@mui/icons-material/Refresh';
 import TextField from '@mui/material/TextField';
-import Button from '@mui/material/Button';
 import Tooltip from '@mui/material/Tooltip';
 import IconButton from '@mui/material/IconButton';
 import CarBookletProvider from '../classes/contracts/CarBookletProvider';
+import { UserDataContext, UserDataProvider } from '../context/UserDataContext';
 
 
 const Home = () => {
+    const { data, isLoading, setUserData } = useContext(UserDataContext);
 
-    const userContext = useContext(UserContext);
-    const [blockNumber, setBlockNumber] = useState<BlockTag>("");
-    const [loading, setLoading] = useState<boolean>(true);
-
-    const carBookletProvider = new CarBookletProvider();
-
+    console.log(data);
     return (
         <Paper sx={{ maxWidth: 936, margin: 'auto', overflow: 'hidden' }}>
             <AppBar
