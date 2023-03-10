@@ -1,12 +1,10 @@
-import Alert from '@mui/material/Alert';
 import Button from '@mui/material/Button';
 import { useContext, useState } from 'react';
 import { UserContext } from '../../App';
-import Web3Provider from '../../classes/utils/Web3Provider';
+import { useMetaMask } from "metamask-react";
 
 // TODO pass this as a prop
 const lightColor: string = 'rgba(255, 255, 255, 0.7)';
-let alertMessage: string = "";
 
 // declare window as any otherwise linter complains
 const { ethereum } = (window as any);
@@ -15,30 +13,32 @@ const ConnectWalletButton = () => {
 
     const [alert, setAlert] = useState(false);
     const userContext = useContext(UserContext);
+    const { status, connect, account, chainId, ethereum } = useMetaMask();
 
-    const handleWalletConnection = async () => {
+    const redirectToMetaMask = () => {
+        window.location.replace('https://metamask.io');
+    };
 
-        if (!userContext.account) {
-            try {
-                const web3 = await Web3Provider.getWeb3Instance();
-                if (web3) {
-                    const accounts = await web3.eth.getAccounts();
-                    userContext.setWeb3(web3);
-                    userContext.setAccount(accounts[0]);
-                    sessionStorage.setItem("account", accounts[0]);
-                }
-            } catch (error: any) {
-                alertMessage = error.message;
-                setAlert(true);
-            }
-        }
-        else {
-            userContext.setWeb3(null);
-            userContext.setAccount("");
-            sessionStorage.setItem("account", "");
-        }
+    const disconnect = () => {
+
     }
 
+    const button = () => {
+        switch (status) {
+            case "initializing":
+                return { action: undefined, text: "Connecting..." };
+            case "unavailable":
+                return { action: redirectToMetaMask, text: "Get Metamask" };
+            case "notConnected":
+                return { action: connect, text: "Connect wallet" };
+            case "connecting":
+                return { action: undefined, text: "Connecting..." };
+            case "connected":
+                return { action: disconnect, text: "Disconnect" };
+            default:
+                return { action: connect, text: "Connect wallet" };
+        }
+    };
     return (
         <>
             <Button
@@ -46,18 +46,10 @@ const ConnectWalletButton = () => {
                 variant="outlined"
                 color="inherit"
                 size="small"
-                onClick={handleWalletConnection}
+                onClick={button().action}
             >
-                {!userContext.account ? "Connect wallet" : "Disconnect wallet"}
+                {button().text}
             </Button>
-            {alert ?
-                <Alert
-                    sx={{ cursor: 'pointer' }}
-                    severity='error'
-                    onClick={() => setAlert(false)}>
-                    {alertMessage}
-                </Alert>
-                : <></>}
         </>
     );
 };

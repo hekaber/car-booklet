@@ -1,4 +1,5 @@
-import { useState, createContext, useEffect } from "react";
+import { useState, createContext } from "react";
+import { MetaMaskProvider } from "metamask-react";
 import { Route, Routes, Outlet } from "react-router-dom";
 import './App.css'
 import Home from './routes/Home';
@@ -39,23 +40,25 @@ function App() {
   const [web3, setWeb3] = useState<Web3 | null>(null);
 
   return (
-    <UserContext.Provider value={{
-      account: account,
-      setAccount: setAccount,
-      web3: web3,
-      setWeb3: setWeb3
-    }}>
-      <div className="App">
-        <Routes>
-          <Route path={HOME_ROUTE} element={<Layout />}>
-            <Route index element={<Home />} />
-            <Route path={`${BOOKLET_ROUTE}:bookletAddress`} element={<BookletDetails />} />
-            <Route path={`${BOOKLET_LIST_ROUTE}`} element={<Booklets />} />
-            <Route path={CONTACT_ROUTE} element={<Contact />} />
-          </Route>
-        </Routes>
-      </div>
-    </UserContext.Provider>
+    <MetaMaskProvider>
+      <UserContext.Provider value={{
+        account: account,
+        setAccount: setAccount,
+        web3: web3,
+        setWeb3: setWeb3
+      }}>
+        <div className="App">
+          <Routes>
+            <Route path={HOME_ROUTE} element={<Layout />}>
+              <Route index element={<Home />} />
+              <Route path={`${BOOKLET_ROUTE}:bookletAddress`} element={<BookletDetails />} />
+              <Route path={`${BOOKLET_LIST_ROUTE}`} element={<Booklets />} />
+              <Route path={CONTACT_ROUTE} element={<Contact />} />
+            </Route>
+          </Routes>
+        </div>
+      </UserContext.Provider>
+    </MetaMaskProvider>
   )
 
 }

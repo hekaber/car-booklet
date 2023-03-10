@@ -1,5 +1,4 @@
-import { useContext } from 'react';
-import { UserContext } from '../../App';
+import { useMetaMask } from 'metamask-react';
 import {
     AppBar, Grid, IconButton, Toolbar, Tooltip, Typography
 } from '@mui/material';
@@ -16,7 +15,7 @@ interface HeaderProps {
 
 export default function Header(props: HeaderProps) {
     const { onDrawerToggle } = props;
-    const userContext = useContext(UserContext);
+    const { account } = useMetaMask();
 
     return (
         <>
@@ -37,7 +36,7 @@ export default function Header(props: HeaderProps) {
                         <Grid
                             item
                         >
-                            {userContext.account ?? ""}
+                            {account ?? ""}
                         </Grid>
                         <Grid item>
                             <Tooltip title="Alerts • No alerts">
