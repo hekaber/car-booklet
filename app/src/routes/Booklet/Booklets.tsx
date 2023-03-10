@@ -1,8 +1,9 @@
-import { useContext, useEffect, useState } from 'react';
+import { useEffect, useState } from 'react';
 import CarBookletProvider from '../../classes/contracts/CarBookletProvider';
 import BookletList from '../../components/BookletList/BookletList';
 import { getContractsByAddress } from '../../classes/contracts/Utilities';
 import { Button, Paper } from "@mui/material";
+import { useMetaMask } from 'metamask-react';
 
 const Booklets = () => {
 
@@ -42,7 +43,3 @@ const Booklets = () => {
 }
 
 export default Booklets;
-
-function useMetaMask(): { account: any; } {
-    throw new Error('Function not implemented.');
-}

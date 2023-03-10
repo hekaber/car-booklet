@@ -11,15 +11,13 @@ import TextField from '@mui/material/TextField';
 import Tooltip from '@mui/material/Tooltip';
 import IconButton from '@mui/material/IconButton';
 import CarBookletProvider from '../classes/contracts/CarBookletProvider';
+import { UserDataContext, UserDataProvider } from '../context/UserDataContext';
 
 
 const Home = () => {
+    const { data, isLoading, setUserData } = useContext(UserDataContext);
 
-    const [blockNumber, setBlockNumber] = useState<BlockTag>("");
-    const [loading, setLoading] = useState<boolean>(true);
-
-    const carBookletProvider = new CarBookletProvider();
-
+    console.log(data);
     return (
         <Paper sx={{ maxWidth: 936, margin: 'auto', overflow: 'hidden' }}>
             <AppBar

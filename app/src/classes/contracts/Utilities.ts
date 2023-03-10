@@ -1,7 +1,12 @@
 import AlchemyApi from '../utils/AlchemyApi';
 import { AssetTransfersCategory, AssetTransfersResponse } from 'alchemy-sdk';
 
-export const getContractsByAddress = async (account: string): Promise<AssetTransfersResponse | undefined> => {
+export const getContractsByAddress = async (account: string | null): Promise<AssetTransfersResponse | undefined> => {
+
+    if (!account) {
+        return undefined;
+    }
+
     const addr = account;
     const alchemyApi = AlchemyApi.getAlchemyInstance();
 
