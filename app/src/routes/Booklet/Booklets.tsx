@@ -1,23 +1,24 @@
 import { useContext, useEffect, useState } from 'react';
-import { UserContext } from '../../App';
 import CarBookletProvider from '../../classes/contracts/CarBookletProvider';
 import BookletList from '../../components/BookletList/BookletList';
 import { getContractsByAddress } from '../../classes/contracts/Utilities';
 import { Button, Paper } from "@mui/material";
 
 const Booklets = () => {
+
+    const { account } = useMetaMask();
+
     const [booklets, setBooklets] = useState<Array<string>>([]);
-    const userContext = useContext(UserContext);
     const carBookletProvider = new CarBookletProvider();
 
     const getBooklets = async () => {
-        const fetchedBooklets: Array<string> = await carBookletProvider.getBooklets(userContext.account);
+        const fetchedBooklets: Array<string> = await carBookletProvider.getBooklets(account);
         setBooklets(fetchedBooklets);
     }
 
     const deployBooklet = async () => {
-        const contractAddress = await carBookletProvider.createBooklet(userContext.account);
-        const txs = await getContractsByAddress(userContext.account);
+        const contractAddress = await carBookletProvider.createBooklet(account);
+        const txs = await getContractsByAddress(account);
         console.log("CONTRACT CREATED", contractAddress);
         console.log("TXs", txs);
     }
@@ -41,3 +42,7 @@ const Booklets = () => {
 }
 
 export default Booklets;
+
+function useMetaMask(): { account: any; } {
+    throw new Error('Function not implemented.');
+}

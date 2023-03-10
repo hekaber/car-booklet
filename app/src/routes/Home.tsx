@@ -1,6 +1,5 @@
 import { useContext, useEffect, useState } from 'react';
 import type { BlockTag } from '@ethersproject/abstract-provider';
-import { UserContext } from '../App';
 
 import AppBar from '@mui/material/AppBar';
 import Grid from '@mui/material/Grid';
@@ -9,7 +8,6 @@ import Toolbar from '@mui/material/Toolbar';
 import SearchIcon from '@mui/icons-material/Search';
 import RefreshIcon from '@mui/icons-material/Refresh';
 import TextField from '@mui/material/TextField';
-import Button from '@mui/material/Button';
 import Tooltip from '@mui/material/Tooltip';
 import IconButton from '@mui/material/IconButton';
 import CarBookletProvider from '../classes/contracts/CarBookletProvider';
@@ -17,7 +15,6 @@ import CarBookletProvider from '../classes/contracts/CarBookletProvider';
 
 const Home = () => {
 
-    const userContext = useContext(UserContext);
     const [blockNumber, setBlockNumber] = useState<BlockTag>("");
     const [loading, setLoading] = useState<boolean>(true);
 
