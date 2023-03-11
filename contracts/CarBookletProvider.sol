@@ -24,7 +24,7 @@ contract CarBookletProvider is Authorize {
         require(!authorized[requester], "Requester has already access");
         // TODO: transfer eth to CarBookletProvider owner? or store it in balance?
         // reminder => send this using ethers call func on ts side
-        require(msg.value >= 0.1 ether, "Minimum amount to send is 0.1 ETH");
+        require(msg.value >= 0.01 ether, "Minimum amount to send is 0.01 ETH");
         address payable pOwner = payable(owner);
         pOwner.transfer(msg.value);
         authorized[requester] = true;
