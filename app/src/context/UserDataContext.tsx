@@ -7,7 +7,7 @@ interface IData {
 }
 
 interface IUserState {
-    data: IData | null;
+    data: IData;
     isLoading: boolean;
 }
 
@@ -20,7 +20,7 @@ interface LayoutProps {
 }
 
 export const UserDataContext = createContext<IUserStateProps>({
-    data: null,
+    data: { authorized: false},
     isLoading: true,
     setUserData: () => {}
 });
@@ -28,7 +28,7 @@ export const UserDataContext = createContext<IUserStateProps>({
 export const UserDataProvider: React.FC<LayoutProps> = ({ children }) => {
 
     const [userState, setUserState] = useState<IUserState>({
-        data: null,
+        data: { authorized: false},
         isLoading: true
     });
     const { account } = useMetaMask();

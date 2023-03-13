@@ -8,7 +8,6 @@ import { useMetaMask } from 'metamask-react';
 const Booklets = () => {
 
     const { account } = useMetaMask();
-
     const [booklets, setBooklets] = useState<Array<string>>([]);
     const carBookletProvider = new CarBookletProvider();
 
@@ -18,6 +17,7 @@ const Booklets = () => {
     }
 
     const deployBooklet = async () => {
+
         const contractAddress = await carBookletProvider.createBooklet(account);
         const txs = await getContractsByAddress(account);
         console.log("CONTRACT CREATED", contractAddress);
@@ -26,6 +26,7 @@ const Booklets = () => {
 
 
     useEffect(() => { getBooklets(); }, []);
+
     return (
         <>
             <Paper sx={{ maxWidth: 936, margin: 'auto', overflow: 'hidden' }}>

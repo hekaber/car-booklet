@@ -1,5 +1,5 @@
-import { useContext, useEffect, useState } from 'react';
-import type { BlockTag } from '@ethersproject/abstract-provider';
+import { useContext } from 'react';
+import { useMetaMask } from 'metamask-react';
 
 import AppBar from '@mui/material/AppBar';
 import Grid from '@mui/material/Grid';
@@ -10,14 +10,22 @@ import RefreshIcon from '@mui/icons-material/Refresh';
 import TextField from '@mui/material/TextField';
 import Tooltip from '@mui/material/Tooltip';
 import IconButton from '@mui/material/IconButton';
+import { UserDataContext } from '../context/UserDataContext';
+import { Button } from '@mui/material';
 import CarBookletProvider from '../classes/contracts/CarBookletProvider';
-import { UserDataContext, UserDataProvider } from '../context/UserDataContext';
+
 
 
 const Home = () => {
     const { data, isLoading, setUserData } = useContext(UserDataContext);
+    const { account } = useMetaMask();
+    const { authorized } = data;
 
-    console.log(data);
+    const allowAccess = async () => {
+        const carBookletProvider = new CarBookletProvider();
+        await carBookletProvider.grantAccess(account);
+    }
+
     return (
         <Paper sx={{ maxWidth: 936, margin: 'auto', overflow: 'hidden' }}>
             <AppBar
@@ -52,6 +60,13 @@ const Home = () => {
                     </Grid>
                 </Toolbar>
             </AppBar>
+            {authorized ?
+                <></>
+                :
+                <Button variant="contained" sx={{ mr: 1 }} onClick={allowAccess}>
+                    Get access
+                </Button>
+            }
         </Paper>
     );
 };
