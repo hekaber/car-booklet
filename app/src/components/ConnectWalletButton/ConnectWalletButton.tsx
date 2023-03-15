@@ -13,7 +13,7 @@ const ConnectWalletButton = () => {
     };
 
     const disconnect = () => {
-
+        //TODO: something? alert for user to do it rather in metamask
     }
 
     const button = () => {

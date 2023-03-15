@@ -1,29 +1,29 @@
 import { useContext } from 'react';
 import { useMetaMask } from 'metamask-react';
 
-import AppBar from '@mui/material/AppBar';
-import Grid from '@mui/material/Grid';
-import Paper from '@mui/material/Paper';
-import Toolbar from '@mui/material/Toolbar';
 import SearchIcon from '@mui/icons-material/Search';
 import RefreshIcon from '@mui/icons-material/Refresh';
-import TextField from '@mui/material/TextField';
-import Tooltip from '@mui/material/Tooltip';
-import IconButton from '@mui/material/IconButton';
 import { UserDataContext } from '../context/UserDataContext';
-import { Button } from '@mui/material';
+import { AppBar, Button, Grid, IconButton, Paper, TextField, Toolbar, Tooltip } from '@mui/material';
 import CarBookletProvider from '../classes/contracts/CarBookletProvider';
+import { AlertContext } from '../context/AlertContext';
 
 
 
 const Home = () => {
-    const { data, isLoading, setUserData } = useContext(UserDataContext);
+    const { data } = useContext(UserDataContext);
+    const { setAlert } = useContext(AlertContext);
     const { account } = useMetaMask();
     const { authorized } = data;
-
+    console.log(account);
+    console.log(data);
     const allowAccess = async () => {
         const carBookletProvider = new CarBookletProvider();
-        await carBookletProvider.grantAccess(account);
+        try {
+            await carBookletProvider.grantAccess(account);
+        } catch (error) {
+            console.log(error);
+        }
     }
 
     return (
@@ -60,13 +60,17 @@ const Home = () => {
                     </Grid>
                 </Toolbar>
             </AppBar>
-            {authorized ?
+
+                <Button variant="contained" sx={{ mr: 1 }} onClick={() => setAlert({type: 'error', message: "alert"})}>
+                    Get access
+                </Button>
+            {/* {authorized || !account ?
                 <></>
                 :
                 <Button variant="contained" sx={{ mr: 1 }} onClick={allowAccess}>
                     Get access
                 </Button>
-            }
+            } */}
         </Paper>
     );
 };

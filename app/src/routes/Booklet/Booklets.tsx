@@ -18,7 +18,13 @@ const Booklets = () => {
 
     const deployBooklet = async () => {
 
-        const contractAddress = await carBookletProvider.createBooklet(account);
+        let contractAddress = null;
+        try {
+            contractAddress = await carBookletProvider.createBooklet(account);
+        } catch (error) {
+            console.log(error);
+        }
+
         const txs = await getContractsByAddress(account);
         console.log("CONTRACT CREATED", contractAddress);
         console.log("TXs", txs);

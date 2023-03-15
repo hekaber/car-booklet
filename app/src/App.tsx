@@ -8,12 +8,13 @@ import Paperbase from "./components/Paperbase/Paperbase";
 import { HOME_ROUTE, CONTACT_ROUTE, BOOKLET_ROUTE, BOOKLET_LIST_ROUTE } from './classes/utils/constants';
 import Booklets from "./routes/Booklet/Booklets";
 import { UserDataProvider } from "./context/UserDataContext";
+import { AlertProvider } from "./context/AlertContext";
 
 function Layout() {
   return (
     <>
       <Paperbase>
-        <Outlet />
+          <Outlet />
       </Paperbase>
     </>
   );
@@ -24,6 +25,7 @@ function App() {
   return (
     <MetaMaskProvider>
       <UserDataProvider>
+        <AlertProvider>
         <div className="App">
           <Routes>
             <Route path={HOME_ROUTE} element={<Layout />}>
@@ -33,7 +35,8 @@ function App() {
               <Route path={CONTACT_ROUTE} element={<Contact />} />
             </Route>
           </Routes>
-        </div>
+          </div>
+        </AlertProvider>
       </UserDataProvider>
     </MetaMaskProvider>
   )

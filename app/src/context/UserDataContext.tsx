@@ -34,6 +34,7 @@ export const UserDataProvider: React.FC<LayoutProps> = ({ children }) => {
     const { account } = useMetaMask();
 
     const getAuthorization = async () => {
+        console.log("Getting auth");
         const carBookletProvider = new CarBookletProvider();
         const authorized = await carBookletProvider.isAuthorized(account);
         const data = {
