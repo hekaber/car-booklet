@@ -15,14 +15,16 @@ const Home = () => {
     const { setAlert } = useContext(AlertContext);
     const { account } = useMetaMask();
     const { authorized } = data;
-    console.log(account);
-    console.log(data);
+
     const allowAccess = async () => {
         const carBookletProvider = new CarBookletProvider();
         try {
             await carBookletProvider.grantAccess(account);
-        } catch (error) {
-            console.log(error);
+        } catch (error: any) {
+            const regex = /reason="([^"]+)"/;
+            const match = error.message.match(regex);
+            console.log(match);
+            setAlert({ type: 'error', message: match[1] });
         }
     }
 
@@ -60,17 +62,13 @@ const Home = () => {
                     </Grid>
                 </Toolbar>
             </AppBar>
-
-                <Button variant="contained" sx={{ mr: 1 }} onClick={() => setAlert({type: 'error', message: "alert"})}>
-                    Get access
-                </Button>
-            {/* {authorized || !account ?
-                <></>
+            {authorized ?
+                <>Access Granted</>
                 :
                 <Button variant="contained" sx={{ mr: 1 }} onClick={allowAccess}>
                     Get access
                 </Button>
-            } */}
+            }
         </Paper>
     );
 };

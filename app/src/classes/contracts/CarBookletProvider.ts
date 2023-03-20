@@ -40,7 +40,7 @@ class CarBookletProvider extends Acontract{
     public async grantAccess(account: string | null): Promise<string | undefined> {
 
         if (!account) {
-            return undefined;
+            throw new Error("No account found, please connect your wallet...");
         }
 
         await this.contract.grantAccess(account, {

@@ -21,7 +21,6 @@ const defaultAlert = { type: undefined, message: '' };
 
 export const AlertProvider: React.FC<React.PropsWithChildren<{}>> = (props) => {
     const [alert, setAlert] = useState<IAlert>(defaultAlert);
-    console.log(alert)
     const contextValue: IAlertProps = {
         ...alert,
         setAlert: setAlert
@@ -40,8 +39,14 @@ export const AlertProvider: React.FC<React.PropsWithChildren<{}>> = (props) => {
             <div className="alert" style={{ display: !alert.type ? 'none' : 'block' }}>
                 <Alert severity={alert.type}>
                     <AlertTitle>{getAlertTitle()}</AlertTitle>
-                    {alert.message}— <strong>check it out!</strong>
-                    <Button onClick={reset}>Ok</Button>
+                    <div><strong>{alert.message}</strong></div>
+                    <Button
+                        variant="contained"
+                        sx={{ mr: 1 }}
+                        color="info"
+                        onClick={reset}>
+                        Ok
+                    </Button>
                 </Alert>
             </div>
                 {props.children}
