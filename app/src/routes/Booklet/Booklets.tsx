@@ -1,14 +1,16 @@
-import { useEffect, useState } from 'react';
+import { useContext, useEffect, useState } from 'react';
 import CarBookletProvider from '../../classes/contracts/CarBookletProvider';
 import BookletList from '../../components/BookletList/BookletList';
 import { getContractsByAddress } from '../../classes/contracts/Utilities';
 import { Button, Paper } from "@mui/material";
 import { useMetaMask } from 'metamask-react';
+import { AlertContext } from '../../context/AlertContext';
 
 const Booklets = () => {
 
     const { account } = useMetaMask();
     const [booklets, setBooklets] = useState<Array<string>>([]);
+    const { setAlert } = useContext(AlertContext);
     const carBookletProvider = new CarBookletProvider();
 
     const getBooklets = async () => {
@@ -20,9 +22,13 @@ const Booklets = () => {
 
         let contractAddress = null;
         try {
+            console.log("Before call");
             contractAddress = await carBookletProvider.createBooklet(account);
         } catch (error) {
-            console.log(error);
+            const err = error as Error;
+            const regex = /reason="([^"]+)"/;
+            const match = err.message.match(regex);
+            setAlert({ type: 'error', message: match ? match[1] : 'unknown' });
         }
 
         const txs = await getContractsByAddress(account);

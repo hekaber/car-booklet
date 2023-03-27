@@ -1,4 +1,4 @@
-import { useEffect, useRef, useState } from 'react';
+import { useContext, useEffect, useRef, useState } from 'react';
 import { useParams } from 'react-router-dom';
 import CarBooklet from '../../classes/contracts/CarBooklet';
 import MaintenanceCard from '../../components/MaintenanceCard/MaintenanceCard';
@@ -7,7 +7,9 @@ import {
     Button, Box, InputAdornment, TextField,
     Typography
 } from '@mui/material';
+
 import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
+import { AlertContext } from '../../context/AlertContext';
 
 
 const BookletDetails = () => {
@@ -15,12 +17,21 @@ const BookletDetails = () => {
     const [mapId, setMapId] = useState<Number>(0);
     const [mileage, setMileage] = useState<number>(0);
     const [description, setDescription] = useState<string>("");
+    const { setAlert } = useContext(AlertContext);
 
     // TODO: set alert when no carBooklet or something else
     const carBooklet = bookletAddress ? new CarBooklet(bookletAddress) : null;
 
     const handleSubmit = async () => {
-        const recordId = await carBooklet?.addMaintenanceRecord(mileage, description);
+        try {
+            const recordId: string | undefined = await carBooklet?.addMaintenanceRecord(mileage, description);
+        } catch (error) {
+            const err = error as Error;
+            const regex = /reason="([^"]+)"/;
+            const match = err.message.match(regex);
+            setAlert({ type: 'error', message: match ? match[1] : 'unknown' });
+        }
+
     }
 
     const init = async () => {

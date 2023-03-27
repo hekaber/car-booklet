@@ -26,9 +26,16 @@ class CarBooklet extends Acontract {
 
     public async addMaintenanceRecord(mileage: number, description: string) {
 
-        this.contract.addMaintenanceRecord(mileage, description);
-        const events = await this.contract.queryFilter("RecordCreated");
-        return events[0] && events[0].args ? events[0].args[0] : 0;
+        try {
+            await this.contract.addMaintenanceRecord(mileage, description);
+            const events = await this.contract.queryFilter("RecordCreated");
+            return events[0] && events[0].args ? events[0].args[0] : 0;
+        } catch (error) {
+            if (error instanceof Error) {
+                throw new Error(error.message);
+            }
+            throw new Error("unknown event occured");
+        }
     }
 }
 
