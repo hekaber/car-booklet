@@ -6,13 +6,13 @@ import { IMaintenanceRecord } from "../../classes/interfaces/Interfaces";
 
 interface IMCProps {
     maintenanceId: number;
-    carBooklet: CarBooklet | null;
+    carBooklet?: CarBooklet | null;
     withData?: boolean
 }
 
 const MaintenanceCard = (props: IMCProps) => {
 
-    const { maintenanceId, carBooklet , withData = true } = props;
+    const { maintenanceId, carBooklet = null , withData = true } = props;
     const [loading, setLoading] = useState<boolean>(true);
     const [maintenance, setMaintenance] = useState<IMaintenanceRecord | null>(null);
 
@@ -33,7 +33,8 @@ const MaintenanceCard = (props: IMCProps) => {
             <Card sx={{ minWidth: 275, marginBottom: 2 }}>
                 <CardContent>
                     {loading
-                        ? <CircularProgress />
+                        ?
+                        <CircularProgress />
                         :
                         <>
                             <Typography variant="h5" component="div">

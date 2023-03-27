@@ -14,31 +14,48 @@ import { parseMMError } from '../../classes/utils/errors';
 
 
 const BookletDetails = () => {
+
     const { bookletAddress } = useParams();
     const [mapId, setMapId] = useState<Number>(0);
     const [mileage, setMileage] = useState<number>(0);
     const [description, setDescription] = useState<string>("");
+    const [waitingForCreate, setWaitingForCreate] = useState<boolean>(false);
     const { setAlert } = useContext(AlertContext);
-
-    // TODO: set alert when no carBooklet or something else
     const carBooklet = bookletAddress ? new CarBooklet(bookletAddress) : null;
 
+    const creationCB = () => {
+        setWaitingForCreate(false);
+        init();
+    }
+
     const handleSubmit = async () => {
+
         try {
-            const recordId: string | undefined = await carBooklet?.addMaintenanceRecord(mileage, description);
+            await carBooklet?.addMaintenanceRecord(mileage, description);
+            carBooklet?.waitFor(creationCB, "RecordCreated");
+            setWaitingForCreate(true);
+            setAlert({
+                type: 'success', message: `Creating record.`
+            });
         } catch (error: any) {
-            const errMsg = parseMMError(error as Error);
-            setAlert({ type: 'error', message: errMsg });
+            setAlert({
+                type: 'error', message: parseMMError(error as Error)
+            });
         }
 
     }
 
     const init = async () => {
+        if (!carBooklet) {
+            setAlert({
+                type: 'error', message: 'No Car booklet available!'
+            })
+        }
         const lastMapId: Number = carBooklet ? await carBooklet.getLastMaintenanceId() : 0;
         setMapId(lastMapId);
     }
 
-    useEffect(() => { init() }, []);
+    useEffect(() => { init() }, [mapId]);
 
     const maintenanceCards = () => {
 
@@ -46,8 +63,16 @@ const BookletDetails = () => {
             return <></>;
         }
 
-        let cards = [];
-        for (let i = 1; i <= mapId; i++) {
+        let cards = waitingForCreate
+            ? [
+                <MaintenanceCard
+                    key={mapId.valueOf() + 1}
+                    maintenanceId={mapId.valueOf() + 1}
+                    withData={false}
+                />
+            ]
+            : [];
+        for (let i = mapId.valueOf(); i >= 1; i--) {
             cards.push(<MaintenanceCard key={i} maintenanceId={i} carBooklet={carBooklet} />);
         }
         return cards;
