@@ -10,6 +10,7 @@ import {
 
 import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
 import { AlertContext } from '../../context/AlertContext';
+import { parseMMError } from '../../classes/utils/errors';
 
 
 const BookletDetails = () => {
@@ -25,11 +26,9 @@ const BookletDetails = () => {
     const handleSubmit = async () => {
         try {
             const recordId: string | undefined = await carBooklet?.addMaintenanceRecord(mileage, description);
-        } catch (error) {
-            const err = error as Error;
-            const regex = /reason="([^"]+)"/;
-            const match = err.message.match(regex);
-            setAlert({ type: 'error', message: match ? match[1] : 'unknown' });
+        } catch (error: any) {
+            const errMsg = parseMMError(error as Error);
+            setAlert({ type: 'error', message: errMsg });
         }
 
     }

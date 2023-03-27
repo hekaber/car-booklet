@@ -7,6 +7,8 @@ import { UserDataContext } from '../context/UserDataContext';
 import { AppBar, Button, Grid, IconButton, Paper, TextField, Toolbar, Tooltip } from '@mui/material';
 import CarBookletProvider from '../classes/contracts/CarBookletProvider';
 import { AlertContext } from '../context/AlertContext';
+import NetworkStatus from '../components/NetworkStatus/NetworkStatus';
+import { parseMMError } from '../classes/utils/errors';
 
 
 
@@ -21,10 +23,8 @@ const Home = () => {
         try {
             await carBookletProvider.grantAccess(account);
         } catch (error: any) {
-            const regex = /reason="([^"]+)"/;
-            const match = error.message.match(regex);
-            console.log(match);
-            setAlert({ type: 'error', message: match[1] });
+            const errMsg = parseMMError(error as Error);
+            setAlert({ type: 'error', message: errMsg });
         }
     }
 
@@ -69,6 +69,7 @@ const Home = () => {
                     Get access
                 </Button>
             }
+            <NetworkStatus/>
         </Paper>
     );
 };

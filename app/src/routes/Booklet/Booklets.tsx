@@ -5,6 +5,7 @@ import { getContractsByAddress } from '../../classes/contracts/Utilities';
 import { Button, Paper } from "@mui/material";
 import { useMetaMask } from 'metamask-react';
 import { AlertContext } from '../../context/AlertContext';
+import { parseMMError } from '../../classes/utils/errors';
 
 const Booklets = () => {
 
@@ -23,11 +24,9 @@ const Booklets = () => {
         let contractAddress = null;
         try {
             contractAddress = await carBookletProvider.createBooklet(account);
-        } catch (error) {
-            const err = error as Error;
-            const regex = /reason="([^"]+)"/;
-            const match = err.message.match(regex);
-            setAlert({ type: 'error', message: match ? match[1] : 'unknown' });
+        } catch (error: any) {
+            const errMsg = parseMMError(error as Error);
+            setAlert({ type: 'error', message: errMsg });
         }
 
         const txs = await getContractsByAddress(account);
