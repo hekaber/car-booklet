@@ -1,6 +1,6 @@
 import abi from '../abi/CarBooklet.json'
 import { BigNumber } from 'ethers';
-import { IMaintenanceRecord } from '../utils/Interfaces';
+import { IMaintenanceRecord } from '../interfaces/Interfaces';
 import Acontract from './Acontract';
 
 class CarBooklet extends Acontract {

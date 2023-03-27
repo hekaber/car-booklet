@@ -22,7 +22,6 @@ const Booklets = () => {
 
         let contractAddress = null;
         try {
-            console.log("Before call");
             contractAddress = await carBookletProvider.createBooklet(account);
         } catch (error) {
             const err = error as Error;
