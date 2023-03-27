@@ -7,11 +7,12 @@ import { IMaintenanceRecord } from "../../classes/interfaces/Interfaces";
 interface IMCProps {
     maintenanceId: number;
     carBooklet: CarBooklet | null;
+    withData?: boolean
 }
 
 const MaintenanceCard = (props: IMCProps) => {
 
-    const { maintenanceId, carBooklet } = props;
+    const { maintenanceId, carBooklet , withData = true } = props;
     const [loading, setLoading] = useState<boolean>(true);
     const [maintenance, setMaintenance] = useState<IMaintenanceRecord | null>(null);
 
@@ -21,7 +22,11 @@ const MaintenanceCard = (props: IMCProps) => {
         setMaintenance(data);
     }
 
-    useEffect(() => { getMaintenanceData() }, []);
+    useEffect(() => {
+        if (withData) {
+            getMaintenanceData()
+        }
+    }, []);
 
     return (
         <>
