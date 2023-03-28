@@ -1,7 +1,6 @@
 import { useContext, useEffect, useState } from 'react';
 import CarBookletProvider from '../../classes/contracts/CarBookletProvider';
 import BookletList from '../../components/BookletList/BookletList';
-import { getContractsByAddress } from '../../classes/contracts/Utilities';
 import { Button, CircularProgress, Paper } from "@mui/material";
 import { useMetaMask } from 'metamask-react';
 import { AlertContext } from '../../context/AlertContext';
@@ -16,8 +15,10 @@ const Booklets = () => {
     const carBookletProvider = new CarBookletProvider();
 
     const getBooklets = async () => {
-        const fetchedBooklets: Array<string> = await carBookletProvider.getBooklets(account);
-        setBooklets(fetchedBooklets);
+        if (account) {
+            const fetchedBooklets: Array<string> = await carBookletProvider.getBooklets(account);
+            setBooklets(fetchedBooklets);
+        }
     }
 
     const creationCB = (address: string) => {
