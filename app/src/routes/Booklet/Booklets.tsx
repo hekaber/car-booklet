@@ -41,7 +41,9 @@ const Booklets = () => {
     }
 
 
-    useEffect(() => { getBooklets(); }, []);
+    useEffect(() => {
+        if (status === "connected" ) getBooklets();
+    }, [status]);
 
     return (
         <>
@@ -50,7 +52,7 @@ const Booklets = () => {
                     { status !== "connected"
                         ? <>Connect your wallet</>
                         : <>
-                            {creating ? <CircularProgress /> : <></>}
+                            { creating ? <CircularProgress /> : <></> }
                             <BookletList
                                 items={booklets}
                                 title="My booklets"

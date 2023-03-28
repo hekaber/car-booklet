@@ -68,7 +68,7 @@ const Home = () => {
                     ? <Box>Please connect your wallet</Box>
                     : <>
                         {authorized && status === "connected" ?
-                            <>Access Granted</>
+                            <Box>Access Granted</Box>
                             :
                             <Button variant="contained" sx={{ mr: 1 }} onClick={allowAccess}>
                                 Get access
@@ -76,7 +76,6 @@ const Home = () => {
                         }
                     </>
                 }
-
                 <NetworkStatus />
             </Container>
         </Paper>
