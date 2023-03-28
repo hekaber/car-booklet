@@ -47,7 +47,7 @@ const Booklets = () => {
 
     return (
         <>
-            <Paper sx={{ maxWidth: 936, margin: 'auto', overflow: 'hidden' }}>
+            <Paper sx={{ maxWidth: 936, margin: 'auto', padding: '2%', overflow: 'hidden' }}>
                 <Container>
                     { status !== "connected"
                         ? <>Connect your wallet</>

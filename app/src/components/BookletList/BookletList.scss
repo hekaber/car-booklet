@@ -1,3 +1,10 @@
 .list-link {
     color: rgba(0, 0, 0, 0.6);
 }
+
+.list-item {
+    border-radius: 5px;
+    &:hover {
+        background-color: rgba(0, 0, 0, 0.4);
+    }
+}

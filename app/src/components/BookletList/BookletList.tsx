@@ -29,8 +29,14 @@ export default function BookletList(props: BookletListProps) {
                     </Typography>
                     : items.map((item, index) => {
                         return (
-                            <Link className="list-link" key={index} to={`${BOOKLET_ROUTE}${item}`}>
-                                <ListItem className="list-item">
+                            <Link
+                                className="list-link"
+                                key={index}
+                                to={`${BOOKLET_ROUTE}${item}`}
+                            >
+                                <ListItem
+                                    className="list-item"
+                                >
                                     <ListItemIcon>
                                         <Folder />
                                     </ListItemIcon>
