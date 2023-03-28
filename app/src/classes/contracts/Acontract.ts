@@ -23,6 +23,11 @@ abstract class Acontract {
     public getProvider() {
         return this.provider;
     }
+
+
+    public waitFor(eventName: string, callback: (myVar: any) => void) {
+        this.contract.on(eventName, callback);
+    }
 }
 
 export default Acontract;

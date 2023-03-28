@@ -1,9 +1,9 @@
-import abi from '../abi/CarBookletProvider.json';
+import abi from '../abi/goerli/CarBookletProvider.json';
 import { Event } from "ethers";
 import Acontract from './Acontract';
 import { ethers, Contract } from 'ethers';
 
-class CarBookletProvider extends Acontract{
+class CarBookletProvider extends Acontract {
 
     constructor() {
         super(
@@ -33,6 +33,7 @@ class CarBookletProvider extends Acontract{
         }
 
         await this.contract.provide(bookletOwner);
+
         const events: Array<Event> = await this.contract.queryFilter("BookletCreated");
         return events.length > 0 && Array.isArray(events[0].args) && events[0].args[0] ? events[0].args[0] : "";
     }

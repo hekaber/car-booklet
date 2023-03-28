@@ -1,4 +1,4 @@
-import abi from '../abi/CarBooklet.json'
+import abi from '../abi/goerli/CarBooklet.json'
 import { BigNumber } from 'ethers';
 import { IMaintenanceRecord } from '../interfaces/Interfaces';
 import Acontract from './Acontract';
@@ -34,10 +34,6 @@ class CarBooklet extends Acontract {
             }
             throw new Error("unknown event occured");
         }
-    }
-
-    public waitFor(callback: () => void, eventName: string) {
-        this.contract.on(eventName, callback);
     }
 }
 
