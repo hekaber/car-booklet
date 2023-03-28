@@ -1,14 +1,14 @@
 import { useContext, useEffect, useState } from 'react';
 import CarBookletProvider from '../../classes/contracts/CarBookletProvider';
 import BookletList from '../../components/BookletList/BookletList';
-import { Button, CircularProgress, Paper } from "@mui/material";
+import { Button, CircularProgress, Container, Paper } from "@mui/material";
 import { useMetaMask } from 'metamask-react';
 import { AlertContext } from '../../context/AlertContext';
 import { parseMMError } from '../../classes/utils/errors';
 
 const Booklets = () => {
 
-    const { account } = useMetaMask();
+    const { account, status } = useMetaMask();
     const [booklets, setBooklets] = useState<Array<string>>([]);
     const [creating, setCreating] = useState<boolean>(false);
     const { setAlert } = useContext(AlertContext);
@@ -46,16 +46,24 @@ const Booklets = () => {
     return (
         <>
             <Paper sx={{ maxWidth: 936, margin: 'auto', overflow: 'hidden' }}>
-                {creating ? <CircularProgress /> : <></>}
-                <BookletList
-                    items={booklets}
-                    title="My booklets"
-                    emptyMessage='No booklets available'
-                />
+                <Container>
+                    { status !== "connected"
+                        ? <>Connect your wallet</>
+                        : <>
+                            {creating ? <CircularProgress /> : <></>}
+                            <BookletList
+                                items={booklets}
+                                title="My booklets"
+                                emptyMessage='No booklets available'
+                            />
+                            <Button variant="contained" sx={{ width: '100%', mr: 1 }} onClick={deployBooklet}>
+                                Add booklet
+                            </Button>
+                        </>
+                    }
+
+                </Container>
             </Paper>
-            <Button variant="contained" sx={{ mr: 1 }} onClick={deployBooklet}>
-                Add booklet
-            </Button>
         </>
     );
 }
