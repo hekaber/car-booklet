@@ -32,7 +32,7 @@ const BookletDetails = () => {
 
         try {
             await carBooklet?.addMaintenanceRecord(mileage, description);
-            carBooklet?.waitFor(creationCB, "RecordCreated");
+            carBooklet?.waitFor("RecordCreated", creationCB);
             setWaitingForCreate(true);
             setAlert({
                 type: 'success', message: `Creating record.`
