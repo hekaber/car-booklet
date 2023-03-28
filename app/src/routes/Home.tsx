@@ -4,18 +4,19 @@ import { useMetaMask } from 'metamask-react';
 import SearchIcon from '@mui/icons-material/Search';
 import RefreshIcon from '@mui/icons-material/Refresh';
 import { UserDataContext } from '../context/UserDataContext';
-import { AppBar, Button, Grid, IconButton, Paper, TextField, Toolbar, Tooltip } from '@mui/material';
+import { AppBar, Button, Container, Grid, IconButton, Paper, TextField, Toolbar, Tooltip } from '@mui/material';
 import CarBookletProvider from '../classes/contracts/CarBookletProvider';
 import { AlertContext } from '../context/AlertContext';
 import NetworkStatus from '../components/NetworkStatus/NetworkStatus';
 import { parseMMError } from '../classes/utils/errors';
+import { Box } from '@mui/system';
 
 
 
 const Home = () => {
     const { data } = useContext(UserDataContext);
     const { setAlert } = useContext(AlertContext);
-    const { account } = useMetaMask();
+    const { account, status } = useMetaMask();
     const { authorized } = data;
 
     const allowAccess = async () => {
@@ -62,14 +63,22 @@ const Home = () => {
                     </Grid>
                 </Toolbar>
             </AppBar>
-            {authorized ?
-                <>Access Granted</>
-                :
-                <Button variant="contained" sx={{ mr: 1 }} onClick={allowAccess}>
-                    Get access
-                </Button>
-            }
-            <NetworkStatus/>
+            <Container>
+                {status !== "connected"
+                    ? <Box>Please connect your wallet</Box>
+                    : <>
+                        {authorized && status === "connected" ?
+                            <>Access Granted</>
+                            :
+                            <Button variant="contained" sx={{ mr: 1 }} onClick={allowAccess}>
+                                Get access
+                            </Button>
+                        }
+                    </>
+                }
+
+                <NetworkStatus />
+            </Container>
         </Paper>
     );
 };
