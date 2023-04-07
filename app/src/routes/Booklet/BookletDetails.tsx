@@ -11,11 +11,13 @@ import {
 import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
 import { AlertContext } from '../../context/AlertContext';
 import { parseMMError } from '../../classes/utils/errors';
+import { useMetaMask } from 'metamask-react';
 
 
 const BookletDetails = () => {
 
     const { bookletAddress } = useParams();
+    const { status } = useMetaMask();
     const [mapId, setMapId] = useState<Number>(0);
     const [mileage, setMileage] = useState<number>(0);
     const [description, setDescription] = useState<string>("");
@@ -35,7 +37,7 @@ const BookletDetails = () => {
             carBooklet?.waitFor("RecordCreated", creationCB);
             setWaitingForCreate(true);
             setAlert({
-                type: 'success', message: `Creating record.`
+                type: 'success', message: `Creating record, this might take a few seconds.`
             });
         } catch (error: any) {
             setAlert({
@@ -80,47 +82,58 @@ const BookletDetails = () => {
 
     return (
         <>
-            <Accordion sx={{ background: 'grey'}}>
-                <AccordionSummary
-                    expandIcon={<ExpandMoreIcon />}
-                    aria-controls="panel1a-content"
-                    id="panel1a-header"
-                >
-                    <Typography>New record</Typography>
-                </AccordionSummary>
-                <AccordionDetails>
-                    <Box>
-                        <TextField
-                            label="Mileage"
-                            id="mileage"
-                            sx={{ m: 1, width: '25ch'}}
-                            onChange={(newVal) => { setMileage(parseInt(newVal.target.value)) }}
-                            InputProps={{
-                                startAdornment: <InputAdornment position="start">km</InputAdornment>,
-                            }}
-                        />
-                        <TextField
-                            label="Description"
-                            id="description"
-                            onChange={(newVal) => { setDescription(newVal.target.value) }}
-                            sx={{ m: 1, width: '75ch' }}
-                            multiline
-                            rows={4}
-                            defaultValue=""
-                            InputProps={{
-                                startAdornment: <InputAdornment position="start"></InputAdornment>,
-                            }}
-                        />
-                        <Button variant="contained" sx={{ mr: 1 }} onClick={handleSubmit}>
-                            Add
-                        </Button>
+            {
+                status === "connected"
+                    ?
+                    <>
+                        <Box>
+                            <br />
+                            Booklet<br />
+                            {bookletAddress}<br />
+                        </Box>
+                        <Accordion sx={{ background: 'grey' }}>
+                            <AccordionSummary
+                                expandIcon={<ExpandMoreIcon />}
+                                aria-controls="panel1a-content"
+                                id="panel1a-header"
+                            >
+                                <Typography>New record</Typography>
+                            </AccordionSummary>
+                            <AccordionDetails>
+                                <Box>
+                                    <TextField
+                                        label="Mileage"
+                                        id="mileage"
+                                        sx={{ m: 1, width: '25ch' }}
+                                        onChange={(newVal) => { setMileage(parseInt(newVal.target.value)) }}
+                                        InputProps={{
+                                            startAdornment: <InputAdornment position="start">km</InputAdornment>,
+                                        }}
+                                    />
+                                    <TextField
+                                        label="Description"
+                                        id="description"
+                                        onChange={(newVal) => { setDescription(newVal.target.value) }}
+                                        sx={{ m: 1, width: '75ch' }}
+                                        multiline
+                                        rows={4}
+                                        defaultValue=""
+                                        InputProps={{
+                                            startAdornment: <InputAdornment position="start"></InputAdornment>,
+                                        }}
+                                    />
+                                    <Button variant="contained" sx={{ mr: 1 }} onClick={handleSubmit}>
+                                        Add
+                                    </Button>
+                                </Box>
+                            </AccordionDetails>
+                        </Accordion>
+                        {maintenanceCards()}
+                        </>
+                    : <Box>
+                        No access to the booklet
                     </Box>
-                </AccordionDetails>
-            </Accordion>
-            <br />
-            Booklet<br />
-            {bookletAddress}<br />
-            {maintenanceCards()}
+            }
         </>
     );
 };
