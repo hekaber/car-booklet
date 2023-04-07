@@ -1,5 +1,7 @@
 import Button from '@mui/material/Button';
 import { useMetaMask } from "metamask-react";
+import { useContext } from 'react';
+import { AlertContext } from '../../context/AlertContext';
 
 // TODO pass this as a prop
 const lightColor: string = 'rgba(255, 255, 255, 0.7)';
@@ -7,6 +9,7 @@ const lightColor: string = 'rgba(255, 255, 255, 0.7)';
 const ConnectWalletButton = () => {
 
     const { status, connect } = useMetaMask();
+    const { setAlert } = useContext(AlertContext);
 
     const redirectToMetaMask = () => {
         window.location.replace('https://metamask.io');
@@ -14,6 +17,7 @@ const ConnectWalletButton = () => {
 
     const disconnect = () => {
         //TODO: something? alert for user to do it rather in metamask
+        setAlert({ type: 'warning', message: "Use the Metamask plugin to disconnect." });
     }
 
     const button = () => {
