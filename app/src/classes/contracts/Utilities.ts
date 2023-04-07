@@ -16,7 +16,7 @@ export const getContractsByAddress = async (account: string | null): Promise<Ass
         const txHashes = await alchemyApi.core.getAssetTransfers({
             fromBlock: "0x0",
             fromAddress: addr,
-            toAddress: import.meta.env.VITE_CONTRACT_PROVIDER_ADDRESS,
+            toAddress: import.meta.env.VITE_CONTRACT_SEPOLIA_PROVIDER_ADDRESS,
             category: [
                 AssetTransfersCategory.EXTERNAL,
                 AssetTransfersCategory.INTERNAL,

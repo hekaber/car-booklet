@@ -29,9 +29,8 @@ const Booklets = () => {
 
     const deployBooklet = async () => {
 
-        let contractAddress = null;
         try {
-            contractAddress = await carBookletProvider.createBooklet(account);
+            await carBookletProvider.createBooklet(account);
             carBookletProvider.waitFor("BookletCreated", creationCB);
             setCreating(true);
         } catch (error: any) {
