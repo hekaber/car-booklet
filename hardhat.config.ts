@@ -9,6 +9,10 @@ const config: HardhatUserConfig = {
     goerli: {
       url: process.env.VITE_APP_GOERLI_DEV_URL,
       accounts: [process.env.VITE_APP_PRIVATE_KEY]
+    },
+    sepolia: {
+      url: process.env.VITE_APP_SEPOLIA_DEV_URL,
+      accounts: [process.env.VITE_APP_PRIVATE_KEY]
     }
   }
 };
