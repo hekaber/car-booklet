@@ -1,5 +1,5 @@
-import { Link } from 'react-router-dom';
-import { useEffect, useState } from 'react';
+import { Link, useBeforeUnload } from 'react-router-dom';
+import { useCallback, useEffect, useState } from 'react';
 
 import Divider from '@mui/material/Divider';
 import Drawer, { DrawerProps } from '@mui/material/Drawer';
@@ -50,17 +50,28 @@ interface NavigatorProps extends DrawerProps {
 }
 
 export default function Navigator(props: NavigatorProps) {
-    const storedItemId = localStorage.getItem('itemId');
+
     const { listItemClick, ...other } = props;
-    const [currItemId, setCurrItemId] = useState(storedItemId ?? 'Home');
+    const [currItemId, setCurrItemId] = useState('');
+
+    useBeforeUnload(
+        useCallback(() => {
+            localStorage.setItem('itemId', currItemId);
+        }, [currItemId])
+    );
 
     useEffect(() => {
-        localStorage.setItem('itemId', currItemId)
+        const storedItemId = localStorage.getItem('itemId');
+
+        if (!currItemId && storedItemId) {
+            setCurrItemId(storedItemId);
+        }
     }, [currItemId]);
 
     const handleListItemClick = (link: string | undefined, itemId: string) => {
         listItemClick(link);
         setCurrItemId(itemId);
+        localStorage.setItem('itemId', itemId);
     }
 
     return (
