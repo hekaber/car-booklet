@@ -28,6 +28,7 @@ interface IProps {
 const drawerWidth = 256;
 
 export default function Paperbase(props: IProps) {
+
     const [mobileOpen, setMobileOpen] = useState(false);
     const [routeName, setRouteName] = useState("/");
 

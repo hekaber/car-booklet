@@ -1,5 +1,5 @@
-import { Link, useBeforeUnload } from 'react-router-dom';
-import { useCallback, useEffect, useState } from 'react';
+import { Link, useLocation } from 'react-router-dom';
+import { useEffect, useState } from 'react';
 
 import Divider from '@mui/material/Divider';
 import Drawer, { DrawerProps } from '@mui/material/Drawer';
@@ -13,7 +13,7 @@ import HomeIcon from '@mui/icons-material/Home';
 import PeopleIcon from '@mui/icons-material/People';
 import DnsRoundedIcon from '@mui/icons-material/DnsRounded';
 import PermMediaOutlinedIcon from '@mui/icons-material/PhotoSizeSelectActual';
-import { HOME_ROUTE, CONTACT_ROUTE, BOOKLET_LIST_ROUTE } from '../../classes/utils/constants';
+import { HOME_ROUTE, CONTACT_ROUTE, BOOKLET_LIST_ROUTE, routeMap } from '../../classes/utils/constants';
 
 const categories = [
     {
@@ -52,26 +52,14 @@ interface NavigatorProps extends DrawerProps {
 export default function Navigator(props: NavigatorProps) {
 
     const { listItemClick, ...other } = props;
-    const [currItemId, setCurrItemId] = useState('');
-
-    useBeforeUnload(
-        useCallback(() => {
-            localStorage.setItem('itemId', currItemId);
-        }, [currItemId])
-    );
-
-    useEffect(() => {
-        const storedItemId = localStorage.getItem('itemId');
-
-        if (!currItemId && storedItemId) {
-            setCurrItemId(storedItemId);
-        }
-    }, [currItemId]);
+    const location = useLocation();
+    const homeRoute = routeMap.get(HOME_ROUTE);
+    const currRoute: string | undefined = routeMap.get(location.pathname);
+    const [currItemId, setCurrItemId] = useState(currRoute ?? homeRoute);
 
     const handleListItemClick = (link: string | undefined, itemId: string) => {
         listItemClick(link);
         setCurrItemId(itemId);
-        localStorage.setItem('itemId', itemId);
     }
 
     return (
