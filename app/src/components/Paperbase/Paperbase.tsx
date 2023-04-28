@@ -8,6 +8,8 @@ import Link from '@mui/material/Link';
 import Navigator from '../Navigator/Navigator';
 import Header from '../Header/Header';
 import theme from './Theme';
+import { useLocation } from 'react-router-dom';
+import { HOME_ROUTE, routeMap } from '../../classes/utils/constants';
 
 function Copyright() {
     return (
@@ -33,14 +35,13 @@ export default function Paperbase(props: IProps) {
     const [routeName, setRouteName] = useState("/");
 
     const isSmUp = useMediaQuery(theme.breakpoints.up('sm'));
-
+    const location = useLocation();
+    const homeRoute = routeMap.get(HOME_ROUTE);
+    const currRouteName: string | undefined = routeMap.get(location.pathname);
+    
     const handleDrawerToggle = () => {
         setMobileOpen(!mobileOpen);
     };
-
-    const handleNavigatorClick = (routeName?: string) => {
-        setRouteName(routeName ?? "/");
-    }
 
     return (
         <ThemeProvider theme={theme}>
@@ -52,7 +53,7 @@ export default function Paperbase(props: IProps) {
                 >
                     {isSmUp ? null : (
                         <Navigator
-                            listItemClick={handleNavigatorClick}
+                            currRouteName={ currRouteName ?? homeRoute}
                             PaperProps={{ style: { width: drawerWidth } }}
                             variant="temporary"
                             open={mobileOpen}
@@ -60,7 +61,7 @@ export default function Paperbase(props: IProps) {
                         />
                     )}
                     <Navigator
-                        listItemClick={handleNavigatorClick}
+                        currRouteName={currRouteName ?? homeRoute}
                         PaperProps={{ style: { width: drawerWidth } }}
                         sx={{ display: { sm: 'block', xs: 'none' } }}
                     />
@@ -68,7 +69,7 @@ export default function Paperbase(props: IProps) {
                 <Box sx={{ flex: 1, display: 'flex', flexDirection: 'column' }}>
                     <Header
                         onDrawerToggle={handleDrawerToggle}
-                        routeName={routeName}
+                        currRouteName={currRouteName ?? homeRoute}
                     />
                     <Box component="main" sx={{ flex: 1, py: 6, px: 4, bgcolor: '#eaeff1' }}>
                         {props.children}

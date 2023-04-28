@@ -13,7 +13,7 @@ import HomeIcon from '@mui/icons-material/Home';
 import PeopleIcon from '@mui/icons-material/People';
 import DnsRoundedIcon from '@mui/icons-material/DnsRounded';
 import PermMediaOutlinedIcon from '@mui/icons-material/PhotoSizeSelectActual';
-import { HOME_ROUTE, CONTACT_ROUTE, BOOKLET_LIST_ROUTE, routeMap } from '../../classes/utils/constants';
+import { HOME_ROUTE, CONTACT_ROUTE, BOOKLET_LIST_ROUTE } from '../../classes/utils/constants';
 
 const categories = [
     {
@@ -46,21 +46,12 @@ const itemCategory = {
 };
 
 interface NavigatorProps extends DrawerProps {
-    listItemClick: (routeName?: string) => void;
+    currRouteName: string | undefined
 }
 
 export default function Navigator(props: NavigatorProps) {
 
-    const { listItemClick, ...other } = props;
-    const location = useLocation();
-    const homeRoute = routeMap.get(HOME_ROUTE);
-    const currRoute: string | undefined = routeMap.get(location.pathname);
-    const [currItemId, setCurrItemId] = useState(currRoute ?? homeRoute);
-
-    const handleListItemClick = (link: string | undefined, itemId: string) => {
-        listItemClick(link);
-        setCurrItemId(itemId);
-    }
+    const { currRouteName, ...other } = props;
 
     return (
         <Drawer variant="permanent" {...other}>
@@ -80,9 +71,9 @@ export default function Navigator(props: NavigatorProps) {
                             <ListItemText sx={{ color: '#fff' }}>{id}</ListItemText>
                         </ListItem>
                         {children.map(({ id: childId, icon, link }) => (
-                            <Link key={childId} to={link ?? '#'} onClick={() => handleListItemClick(link, childId)}>
+                            <Link key={childId} to={link ?? '#'}>
                                 <ListItem disablePadding>
-                                    <ListItemButton selected={childId === currItemId} sx={item}>
+                                    <ListItemButton selected={childId === currRouteName} sx={item}>
                                         <ListItemIcon>{icon}</ListItemIcon>
                                         <ListItemText>
                                             {childId}

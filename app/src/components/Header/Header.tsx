@@ -10,7 +10,7 @@ import ConnectWalletButton from '../ConnectWalletButton/ConnectWalletButton';
 
 interface HeaderProps {
     onDrawerToggle: () => void;
-    routeName: string;
+    currRouteName: string | undefined;
 }
 
 export default function Header(props: HeaderProps) {
@@ -63,7 +63,7 @@ export default function Header(props: HeaderProps) {
                     <Grid container alignItems="center" spacing={1}>
                         <Grid item xs>
                             <Typography color="inherit" variant="h5" component="h1">
-                                {props.routeName}
+                                {props.currRouteName}
                             </Typography>
                         </Grid>
                         <Grid item>
