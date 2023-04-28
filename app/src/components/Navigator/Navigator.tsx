@@ -1,6 +1,4 @@
-import { Link, useLocation } from 'react-router-dom';
-import { useEffect, useState } from 'react';
-
+import { Link } from 'react-router-dom';
 import Divider from '@mui/material/Divider';
 import Drawer, { DrawerProps } from '@mui/material/Drawer';
 import List from '@mui/material/List';
@@ -13,19 +11,19 @@ import HomeIcon from '@mui/icons-material/Home';
 import PeopleIcon from '@mui/icons-material/People';
 import DnsRoundedIcon from '@mui/icons-material/DnsRounded';
 import PermMediaOutlinedIcon from '@mui/icons-material/PhotoSizeSelectActual';
-import { HOME_ROUTE, CONTACT_ROUTE, BOOKLET_LIST_ROUTE } from '../../classes/utils/constants';
+import { HOME_ROUTE, CONTACT_ROUTE, BOOKLET_LIST_ROUTE, HOME, BOOKLETS, CONTACT, MENU } from '../../classes/utils/constants';
 
 const categories = [
     {
-        id: 'Menu',
+        id: MENU,
         children: [
             {
-                id: 'Home',
+                id: HOME,
                 icon: <PeopleIcon />,
                 link: HOME_ROUTE
             },
-            { id: 'Booklets', icon: <DnsRoundedIcon />, link: BOOKLET_LIST_ROUTE },
-            { id: 'Contact', icon: <PermMediaOutlinedIcon />, link: CONTACT_ROUTE },
+            { id: BOOKLETS, icon: <DnsRoundedIcon />, link: BOOKLET_LIST_ROUTE },
+            { id: CONTACT, icon: <PermMediaOutlinedIcon />, link: CONTACT_ROUTE },
         ],
     }
 ];

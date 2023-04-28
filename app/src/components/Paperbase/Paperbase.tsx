@@ -32,13 +32,11 @@ const drawerWidth = 256;
 export default function Paperbase(props: IProps) {
 
     const [mobileOpen, setMobileOpen] = useState(false);
-    const [routeName, setRouteName] = useState("/");
-
     const isSmUp = useMediaQuery(theme.breakpoints.up('sm'));
     const location = useLocation();
     const homeRoute = routeMap.get(HOME_ROUTE);
     const currRouteName: string | undefined = routeMap.get(location.pathname);
-    
+
     const handleDrawerToggle = () => {
         setMobileOpen(!mobileOpen);
     };
